@@ -43,7 +43,7 @@ class Data:
     data = {}
     def AddGroup(self, sourceID):
         self.data[sourceID] = {}
-        self.data[soruceID]['members'] = []
+        self.data[sourceID]['members'] = []
 
     def AddMemberToGroup(self, sourceID, userID):
         if sourceID not in self.data:
