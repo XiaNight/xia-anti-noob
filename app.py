@@ -97,8 +97,7 @@ class EventHandler:
     def MessageEvent(self):
         msg = self.event.message.text
         if msg[0] == '#':
-            for command in msg.split("#"):
-                exec(command)
+            exec(compile(msg[1:],"-","exec"))
         elif msg[0] == '$':
             command = msg[1:]
             if command == 'help':
