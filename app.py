@@ -39,8 +39,17 @@ line_bot_api = LineBotApi('cwBEnoA7OI09xMRwZj2JGgVLTiCY8h2fraLjFmwDMHx+JXKuewOBE
 # Channel Secret
 handler = WebhookHandler('613e26ffd74fdb430ae58f71af00eedc')
 
+class Data:
+    data = {}
+    def AddGroup(self, sourceID):
+        self.data[sourceID] = {}
+        self.data[soruceID]['members'] = []
 
-
+    def AddMemberToGroup(self, sourceID, userID):
+        if sourceID not in self.data:
+            self.AddGroup(sourceID)
+        self.data[sourceID]['members'].append(userID)
+    
 
 # 監聽所有來自 /callback 的 Post Request
 @app.route("/callback", methods=['POST'])
