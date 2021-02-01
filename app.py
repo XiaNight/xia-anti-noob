@@ -49,7 +49,7 @@ class Data:
         if sourceID not in self.data:
             self.AddGroup(sourceID)
         self.data[sourceID]['members'].append(userID)
-    
+data = Data()
 
 # 監聽所有來自 /callback 的 Post Request
 @app.route("/callback", methods=['POST'])
