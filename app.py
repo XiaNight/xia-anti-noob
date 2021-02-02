@@ -149,7 +149,7 @@ class EventHandler:
         else:
             if logWarning:
                 self.Print("Permission denied, you have no permission to do this action.")
-                self.Print("Your level: " + userPerm + " Required level: " + permRequire)
+                self.Print("Your level: " + str(userPerm) + " Required level: " + str(permRequire))
             return False
 
     # When user/group/room sends a message.
