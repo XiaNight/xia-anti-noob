@@ -143,11 +143,13 @@ class EventHandler:
 
     # Return true if user's permission level is reached the required.
     def CheckPermissionLevel(self, userID, permRequire, logWarning = True):
-        if self.data.GetUserPermmisionLevel(self.sourceID, userID) >= permRequire:
+        userPerm = self.data.GetUserPermmisionLevel(self.sourceID, userID)
+        if userPerm >= permRequire:
             return True
         else:
             if logWarning:
                 self.Print("Permission denied, you have no permission to do this action.")
+                self.Print("Your level: " + userPerm + " Required level: " + permRequire)
             return False
 
     # When user/group/room sends a message.
