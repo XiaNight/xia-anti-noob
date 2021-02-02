@@ -46,7 +46,7 @@ class Data:
     def AddGroup(self, sourceID):
         self.data[sourceID] = {}
         self.data[sourceID]['users'] = {}
-        '''
+        '''s
             Kick    Give-Op Commands
         1:  N       N       N           normal user
         2:  Y       N       N           management
@@ -92,8 +92,6 @@ class Data:
     def DisableDebug(self, sourceID):
         self.data[sourceID]["debug"] = False
 
-data = Data()
-
 # 監聽所有來自 /callback 的 Post Request
 @app.route("/callback", methods=['POST'])
 def callback():
@@ -110,7 +108,8 @@ def callback():
     return 'OK'
 
 class EventHandler:
-    global data
+
+    data = Data()
 
     #Event
     event = None
@@ -127,7 +126,7 @@ class EventHandler:
         
         try:
             self.GetSource() # Get event source.
-            data.GroupUpdate(self.sourceID) # Update group statistics.
+            self.data.GroupUpdate(self.sourceID) # Update group statistics.
 
             if event.type == 'message':
                 self.MessageEvent()
@@ -148,7 +147,7 @@ class EventHandler:
 
     # Return true if user's permission level is reached the required.
     def CheckPermissionLevel(self, userID, permRequire, logWarning = True):
-        if data.GetUserPermmisionLevel(self.sourceID, userID) >= permRequire:
+        if self.data.GetUserPermmisionLevel(self.sourceID, userID) >= permRequire:
             return True
         else:
             if logWarning:
@@ -157,8 +156,8 @@ class EventHandler:
 
     # When user/group/room sends a message.
     def MessageEvent(self):
-        data.UserUpdate(self.sourceID, self.GetUserID())
-        perm = data.GetUserPermmisionLevel(self.sourceID, self.GetUserID())
+        self.data.UserUpdate(self.sourceID, self.GetUserID())
+        perm = self.data.GetUserPermmisionLevel(self.sourceID, self.GetUserID())
         msg = self.event.message.text
         if msg[0] == '#': # Raw python code executing.
             if self.CheckPermissionLevel(self.GetUserID, 4, logWarning=False): # Requires developer level to execute.
@@ -197,7 +196,7 @@ class EventHandler:
     def MemberJoinEvent(self):
         self.Print('User Joined')
 
-        data.AddUserToGroup(sourceID, self.GetUserID(), 1)
+        self.data.AddUserToGroup(sourceID, self.GetUserID(), 1)
 
         userProfile = self.event.joined.members[0]
 
@@ -235,7 +234,7 @@ class EventHandler:
     # When bot joins a group/room.
     def JoinEvent(self):
         self.Print('Bot Joined')
-        data.AddGroup(self.sourceID)
+        self.data.AddGroup(self.sourceID)
         pass
     
     # When user added bot as friend.
