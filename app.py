@@ -41,14 +41,57 @@ handler = WebhookHandler('613e26ffd74fdb430ae58f71af00eedc')
 
 class Data:
     data = {}
+
+    # Add sourceID to data
     def AddGroup(self, sourceID):
         self.data[sourceID] = {}
-        self.data[sourceID]['members'] = []
+        self.data[sourceID]['users'] = {}
+        '''
+            Kick    Give-Op Commands
+        1:  N       N       N           normal user
+        2:  Y       N       N           management
+        3:  Y       Y       N           owner
+        4:  Y       Y       Y           developer
+        '''
+        self.AddUserToGroup(sourceID, 'Ud631fff6ef744ccc6fce86b5e1d1b4bb', 4) # Add myself to the group as a dev.
 
-    def AddMemberToGroup(self, sourceID, userID):
+        self.DisableDebug(sourceID) # Default debug mode is disabled.
+
+    # Add user to a group/room.
+    def AddUserToGroup(self, sourceID, userID, level = 1):
         if sourceID not in self.data:
             self.AddGroup(sourceID)
-        self.data[sourceID]['members'].append(userID)
+        self.data[sourceID]['users'][userID] = {'permission': level}
+    
+    # Get all user IDs in a group/room.
+    def GetUsers(self, sourceID):
+        return self.data[sourceID]
+
+    # Updates a uses, called when user have actions.
+    def UserUpdate(self, sourceID, userID):
+        if userID not in self.data[sourceID]['users']:
+            self.AddUserToGroup(sourceID, userID)
+
+    # Updates a group, called when group/room have actions.
+    def GroupUpdate(self, sourceID):
+        if sourceID not in self.data:
+            self.AddGroup(sourceID)
+    
+    # Get a user's permission level in a group/room.
+    def GetUserPermmisionLevel(self, sourceID, userID):
+        if userID in self.data[sourceID][users]:
+            return self.data[sourceID]['users'][userID]['permission']
+        else
+            return 0
+
+    # Enables debug for a group/room.
+    def EnableDebug(self, sourceID):
+        self.data[sourceID]["debug"] = True
+
+    # Disables debug for a group/room. Default for a group.
+    def DisableDebug(self, sourceID):
+        self.data[sourceID]["debug"] = False
+
 data = Data()
 
 # 監聽所有來自 /callback 的 Post Request
@@ -67,6 +110,7 @@ def callback():
     return 'OK'
 
 class EventHandler:
+    global data
 
     #Event
     event = None
@@ -80,9 +124,10 @@ class EventHandler:
 
     def OnEventGet(self, event):
         self.event = event
-
+        
         try:
-            self.GetSource()
+            self.GetSource() # Get event source.
+            data.GroupUpdate(self.sourceID) # Update group statistics.
 
             if event.type == 'message':
                 self.MessageEvent()
@@ -92,30 +137,47 @@ class EventHandler:
                 self.MemberLeaveEvent()
             if event.type == 'join':
                 self.JoinEvent()
-            # self.userID = event.source.user_id
-            # self.userProfile = line_bot_api.get_profile(self.userID)
 
             if self.debugMode:
-                self.Debug()
+                self.Debug() # Run debug if active.
 
-            self.Default()
+            self.Default() # Defaule operation for a event.
 
-        except Exception as e:
+        except Exception as e: # Error handler
             self.Print(str(e))
 
+    # Return true if user's permission level is reached the required.
+    def CheckPermissionLevel(self, userID, permRequire, logWarning = True):
+        if data.GetUserPermmisionLevel(self.sourceID, userID) >= permRequire:
+            return True
+        else:
+            if logWarning:
+                self.Print("Permission denied, you have no permission to do this action.")
+            return False
+
+    # When user/group/room sends a message.
     def MessageEvent(self):
+        data.UserUpdate(self.sourceID, self.GetUserID())
+        perm = data.GetUserPermmisionLevel(self.sourceID, self.GetUserID())
         msg = self.event.message.text
-        if msg[0] == '#':
-            exec(compile(msg[1:],"-","exec"))
-        elif msg[0] == '$':
+        if msg[0] == '#': # Raw python code executing.
+            if self.CheckPermissionLevel(self.GetUserID, 4, logWarning=False): # Requires developer level to execute.
+                exec(compile(msg[1:],"-","exec"))
+        elif msg[0] == '$': # Commands here.
             command = msg[1:]
             if command == 'help':
-                self.Print('$EnableDebug() to enable debug\n$DisableDebug() to disable debug\nstart with # to execute raw python code.')
+                if self.CheckPermissionLevel(self.GetUserID(), 2):
+                    self.Print('$EnableDebug() to enable debug\n$DisableDebug() to disable debug\nstart with # to execute raw python code.')
             if command == 'EnableDebug':
-                self.EnableDebug()
+                if self.CheckPermissionLevel(self.GetUserID(), 4):
+                    self.EnableDebug()
             if command == 'DisableDebug':
-                self.DisableDebug()
+                if self.CheckPermissionLevel(self.GetUserID(), 4):
+                    self.DisableDebug()
 
+    
+
+    # Gets the source of the event and store it.
     def GetSource(self):
         if self.event.source.type == 'user':
             self.sourceID = self.event.source.user_id
@@ -123,9 +185,19 @@ class EventHandler:
             self.sourceID = self.event.source.group_id
         elif self.event.source.type == 'room':
             self.sourceID = self.event.source.room_id
-    
+
+    # Get user ID if there is one.
+    def GetUserID(self):
+        try:
+            return self.event.source.user_id
+        except:
+            return None
+
+    # When member joined a group/room
     def MemberJoinEvent(self):
-        self.Print('Member Joined')
+        self.Print('User Joined')
+
+        data.AddUserToGroup(sourceID, self.GetUserID(), 1)
 
         userProfile = self.event.joined.members[0]
 
@@ -140,8 +212,9 @@ class EventHandler:
 
         pass
 
+    # Whem member leaves a group/room
     def MemberLeaveEvent(self):
-        self.Print('Member Left')
+        self.Print('User Left')
 
         userProfile = self.event.left.members[0]
 
@@ -159,28 +232,37 @@ class EventHandler:
         self.Print('User Status Message: ' + profile.status_message)
         pass
 
-    def JoinEvent(self): # When bot joins a room/group.
+    # When bot joins a group/room.
+    def JoinEvent(self):
         self.Print('Bot Joined')
+        data.AddGroup(self.sourceID)
+        pass
+    
+    # When user added bot as friend.
+    def FollowEvent(self): 
         pass
 
-    def FollowEvent(self): # When user added bot as friend.
-        pass
-
+    # Default operation for an event.
     def Default(self):
         pass
 
+    # Prints out user profile.
     def PrintUserProfile(self):
         pass
 
+    # Log out text as a message to the source.
     def Print(self, text):
         message = TextSendMessage(text=text)
         line_bot_api.push_message(self.sourceID, message)
 
+    # Debug action.
     def Debug(self):
         self.Print(str(self.event))
+    # Enables debug.
     def EnableDebug(self):
         self.Print('Debug Enabled')
         self.debugMode = True
+    # Disables debug.
     def DisableDebug(self):
         self.Print('Debug Disabled')
         self.debugMode = False
