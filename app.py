@@ -75,7 +75,7 @@ class Data:
     
     # Get a user's permission level in a group/room.
     def GetUserPermmisionLevel(self, sourceID, userID):
-        if userID in self.data[sourceID][users]:
+        if userID in self.data[sourceID]['users']:
             return self.data[sourceID]['users'][userID]['permission']
         else:
             return 0
