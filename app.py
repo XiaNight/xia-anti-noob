@@ -158,7 +158,7 @@ class EventHandler:
         perm = self.data.GetUserPermmisionLevel(self.sourceID, self.GetUserID())
         msg = self.event.message.text
         if msg[0] == '#': # Raw python code executing.
-            if self.CheckPermissionLevel(self.GetUserID, 0, logWarning=True): # Requires developer level to execute.
+            if self.CheckPermissionLevel(self.GetUserID(), 4, logWarning=True): # Requires developer level to execute.
                 exec(compile(msg[1:],"-","exec"))
         elif msg[0] == '$': # Commands here.
             command = msg[1:]
@@ -188,6 +188,7 @@ class EventHandler:
         try:
             return self.event.source.user_id
         except:
+            print('No user_id in this event')
             return None
 
     # When member joined a group/room
