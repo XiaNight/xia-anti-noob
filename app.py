@@ -250,7 +250,7 @@ class EventHandler:
 
     # Log out text as a message to the source.
     def Print(self, text):
-        message = TextSendMessage(text=text)
+        message = TextSendMessage(text=str(text))
         line_bot_api.push_message(self.sourceID, message)
 
     # Debug action.
@@ -359,3 +359,4 @@ def ToJson(text):
 if __name__ == "__main__":
     port = int(os.environ.get('PORT', 5000))
     app.run(host='0.0.0.0', port=port)
+    SendTextMessage('Ud631fff6ef744ccc6fce86b5e1d1b4bb', 'Bot Ready.')
