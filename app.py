@@ -88,6 +88,9 @@ class Data:
     def DisableDebug(self, sourceID):
         self.data[sourceID]["debug"] = False
 
+    def GetDebugMode(self):
+        return self.data[sourceID]["debug"]
+
 # Monitor all /callback Post Request
 @app.route("/callback", methods=['POST'])
 def callback():
@@ -112,7 +115,7 @@ class EventHandler:
 
     sourceID = None
 
-    debugMode = True
+    debugMode = False
 
     def __init__(self):
         pass
@@ -123,7 +126,7 @@ class EventHandler:
         try:
             self.GetSource() # Get event source.
             self.data.GroupUpdate(self.sourceID) # Update group statistics.
-
+            debugMode = self.data.GetDebugMode()
             if event.type == 'message':
                 self.MessageEvent()
             if event.type == 'memberJoined':
@@ -139,6 +142,7 @@ class EventHandler:
             self.Default() # Defaule operation for a event.
 
         except Exception as e: # Error handler
+            print(sys.exc_info())
             self.Print(str(e))
 
     # Return true if user's permission level is reached the required.
@@ -151,6 +155,11 @@ class EventHandler:
                 self.Print("Permission denied, you have no permission to do this action.")
                 self.Print("Your level: " + str(userPerm) + " Required level: " + str(permRequire))
             return False
+    
+    def CheckKeyWord(self, keyword, permission = 1, logWarning = True):
+        if self.CheckPermissionLevel(self.GetUserID(), permission, logWarning=logWarning):
+            return True
+        return False
 
     # When user/group/room sends a message.
     def MessageEvent(self):
@@ -158,21 +167,16 @@ class EventHandler:
         perm = self.data.GetUserPermmisionLevel(self.sourceID, self.GetUserID())
         msg = self.event.message.text
         if msg[0] == '#': # Raw python code executing.
-            if self.CheckPermissionLevel(self.GetUserID(), 4, logWarning=True): # Requires developer level to execute.
+            if self.CheckPermissionLevel(self.GetUserID(), 4, logWarning=False): # Requires developer level to execute.
                 exec(compile(msg[1:],"-","exec"))
         elif msg[0] == '$': # Commands here.
             command = msg[1:]
-            if command == 'help':
-                if self.CheckPermissionLevel(self.GetUserID(), 2):
-                    self.Print('$EnableDebug() to enable debug\n$DisableDebug() to disable debug\nstart with # to execute raw python code.')
-            if command == 'EnableDebug':
-                if self.CheckPermissionLevel(self.GetUserID(), 4):
-                    self.EnableDebug()
-            if command == 'DisableDebug':
-                if self.CheckPermissionLevel(self.GetUserID(), 4):
-                    self.DisableDebug()
-
-    
+            if self.CheckKeyWord('help', 2):
+                self.Print('$EnableDebug() to enable debug\n$DisableDebug() to disable debug\nstart with # to execute raw python code.')
+            if self.CheckKeyWord('EnableDebug', 4):
+                self.EnableDebug()
+            if self.CheckKeyWord('DisableDebug', 4):
+                self.DisableDebug()
 
     # Gets the source of the event and store it.
     def GetSource(self):
