@@ -6,8 +6,8 @@
 # git commit -am'ok'
 # git push heroku master
 
+'''Line Bot API'''
 from flask import Flask, request, abort
-
 from linebot import (
     LineBotApi, WebhookHandler
 )
@@ -17,12 +17,21 @@ from linebot.exceptions import (
 from linebot.models import *
 
 
+'''3rd Party Modules'''
+from google_trans_new import google_translator
+
+
+'''Custome Modules'''
 from message import *
 from new import *
 from Function import *
+from XStandForGenerator import *
 
-import tempfile, os
+
+'''Standard Modules'''
+import tempfile
 import datetime
+import random
 import json
 import time
 import sys
@@ -177,6 +186,13 @@ class EventHandler:
                 self.EnableDebug()
             if self.CheckKeyWord('DisableDebug', 4):
                 self.DisableDebug()
+        elif msg[0] == '%':
+            userInput, times = msg[1:].split(' ')
+            output = XSF.fetch(userInput, times)
+            for t in output:
+                self.Print(t)
+                pass
+            pass
 
     # Gets the source of the event and store it.
     def GetSource(self):
@@ -199,7 +215,7 @@ class EventHandler:
     def MemberJoinEvent(self):
         self.Print('User Joined')
 
-        self.data.AddUserToGroup(sourceID, self.GetUserID(), 1)
+        self.data.AddUserToGroup(self.sourceID, self.GetUserID(), 1)
 
         userProfile = self.event.joined.members[0]
 
@@ -270,6 +286,7 @@ class EventHandler:
         self.debugMode = False
 
 EH = EventHandler()
+XSF = XStandFor()
 
 @handler.add(MemberJoinedEvent)
 def handle_member_joined(event):
@@ -363,4 +380,5 @@ def ToJson(text):
 if __name__ == "__main__":
     port = int(os.environ.get('PORT', 5000))
     app.run(host='0.0.0.0', port=port)
+    print('Bot Ready')
     SendTextMessage('Ud631fff6ef744ccc6fce86b5e1d1b4bb', 'Bot Ready.')
