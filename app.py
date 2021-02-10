@@ -97,7 +97,7 @@ class Data:
     def DisableDebug(self, sourceID):
         self.data[sourceID]["debug"] = False
 
-    def GetDebugMode(self):
+    def GetDebugMode(self, sourceID):
         return self.data[sourceID]["debug"]
 
 # Monitor all /callback Post Request
@@ -135,7 +135,7 @@ class EventHandler:
         try:
             self.GetSource() # Get event source.
             self.data.GroupUpdate(self.sourceID) # Update group statistics.
-            debugMode = self.data.GetDebugMode()
+            debugMode = self.data.GetDebugMode(self.sourceID)
             if event.type == 'message':
                 self.MessageEvent()
             if event.type == 'memberJoined':
