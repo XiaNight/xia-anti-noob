@@ -123,6 +123,8 @@ class EventHandler:
     event = None
 
     sourceID = None
+    replyToken = None
+    replyTokenUsed = False
 
     debugMode = False
 
@@ -135,6 +137,9 @@ class EventHandler:
         try:
             self.GetSource() # Get event source.
             self.data.GroupUpdate(self.sourceID) # Update group statistics.
+            self.replyToken = self.event.reply_token
+            self.replyTokenUsed = False
+
             debugMode = self.data.GetDebugMode(self.sourceID)
             if event.type == 'message':
                 self.MessageEvent()
@@ -271,7 +276,10 @@ class EventHandler:
     # Log out text as a message to the source.
     def Print(self, text):
         message = TextSendMessage(text=str(text))
-        line_bot_api.push_message(self.sourceID, message)
+        if self.replyTokenUsed:
+            line_bot_api.push_message(self.sourceID, message)
+        else:
+            line_bot_api.reply_message(self.replyToken, message)
 
     # Debug action.
     def Debug(self):
