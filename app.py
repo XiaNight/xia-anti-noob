@@ -381,6 +381,7 @@ def SaveSectionJson(sourceID, key, value):
 
     with open(path, 'w') as outfile:
         json.dump(data, outfile)
+        
 
 def ReadSectionJson(sourceID):
     path = 'group_data/' + sourceID + '.json'
