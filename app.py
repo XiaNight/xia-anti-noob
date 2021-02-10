@@ -193,11 +193,18 @@ class EventHandler:
             if self.CheckKeyWord('DisableDebug', command, 4):
                 self.DisableDebug()
         elif msg[0] == '%':
-            userInput, times = msg[1:].split(' ')
-            output = XSF.fetch(userInput, times)
-            for t in output:
-                self.Print(t)
-                pass
+            splits = msg[1:].split(' ')
+            if len(splits) < 2:
+                self.Print('Not enough arguments')
+                return
+            userInput = splits[0]
+            times splits[1]
+            times = int(times)
+            self.Print(XSF.fetch(userInput, times))
+            # output = XSF.fetch(userInput, times)
+            # for t in output:
+            #     self.Print(t)
+            #     pass
             pass
 
     # Gets the source of the event and store it.
