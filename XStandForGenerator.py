@@ -36,7 +36,7 @@ class XStandFor:
 
 
 	def fetch(self, keyword, times):
-		output = []
+		output = ""
 		for i in range(times):
 			out = ""
 			userInput = keyword.lower()
@@ -47,7 +47,7 @@ class XStandFor:
 				result.append(self.GetRandomIndex(self.classified[char]))
 
 			sentence = self.Merge(result)
-			out += str(i+1) + '\t' + sentence
+			out += str(i+1) + '\t' + sentence + '\n'
 
 			# translations = RandomTranslate(sentence, 'zh-tw')
 			# for t in translations:
@@ -55,7 +55,7 @@ class XStandFor:
 			
 			translations = translator.translate(sentence, lang_tgt='zh-tw')
 			out += '\t' + translations
-			output.append(out)
+			output += out + '\n\n'
 		return output
 
 	def Merge(self, LIST):
