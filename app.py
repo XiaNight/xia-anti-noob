@@ -382,14 +382,20 @@ def SaveSectionJson(sourceID, key, value):
     with open(path, 'w') as outfile:
         json.dump(data, outfile)
 
-
 def ReadSectionJson(sourceID):
     path = 'group_data/' + sourceID + '.json'
     with open(path) as json_file:
-        data = json.load(json_file)
+        data = FromJson(json_file)
         return data
+
+def FromJson(text):
+    exec('return ' + text)
+
+def ToJson(text):
+    return str(text)
 
 if __name__ == "__main__":
     port = int(os.environ.get('PORT', 5000))
     app.run(host='0.0.0.0', port=port)
     print('Bot Ready')
+    SendTextMessage('Ud631fff6ef744ccc6fce86b5e1d1b4bb', 'Bot Ready.')
