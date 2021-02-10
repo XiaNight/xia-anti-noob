@@ -385,14 +385,14 @@ def SaveSectionJson(sourceID, key, value):
 def ReadSectionJson(sourceID):
     path = 'group_data/' + sourceID + '.json'
     with open(path) as json_file:
-        data = FromJson(json_file)
+        data = json.load(json_file)
         return data
 
-def FromJson(text):
-    exec('return ' + text)
+# def FromJson(text):
+#     exec('return ' + text)
 
-def ToJson(text):
-    return str(text)
+# def ToJson(text):
+#     return str(text)
 
 if __name__ == "__main__":
     port = int(os.environ.get('PORT', 5000))
