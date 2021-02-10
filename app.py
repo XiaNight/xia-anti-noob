@@ -170,9 +170,10 @@ class EventHandler:
                 self.Print("Your level: " + str(userPerm) + " Required level: " + str(permRequire))
             return False
     
-    def CheckKeyWord(self, keyword, permission = 1, logWarning = True):
-        if self.CheckPermissionLevel(self.GetUserID(), permission, logWarning=logWarning):
-            return True
+    def CheckKeyWord(self, keyword, userCmd, permission = 1, logWarning = True):
+        if userCmd == keyword:
+            if self.CheckPermissionLevel(self.GetUserID(), permission, logWarning=logWarning):
+                return True
         return False
 
     # When user/group/room sends a message.
@@ -185,11 +186,11 @@ class EventHandler:
                 exec(compile(msg[1:],"-","exec"))
         elif msg[0] == '$': # Commands here.
             command = msg[1:]
-            if self.CheckKeyWord('help', 2):
+            if self.CheckKeyWord('help', command, 2):
                 self.Print('$EnableDebug() to enable debug\n$DisableDebug() to disable debug\nstart with # to execute raw python code.')
-            if self.CheckKeyWord('EnableDebug', 4):
+            if self.CheckKeyWord('EnableDebug', command, 4):
                 self.EnableDebug()
-            if self.CheckKeyWord('DisableDebug', 4):
+            if self.CheckKeyWord('DisableDebug', command, 4):
                 self.DisableDebug()
         elif msg[0] == '%':
             userInput, times = msg[1:].split(' ')
@@ -279,6 +280,7 @@ class EventHandler:
         if self.replyTokenUsed:
             line_bot_api.push_message(self.sourceID, message)
         else:
+            self.replyTokenUsed = True
             line_bot_api.reply_message(self.replyToken, message)
 
     # Debug action.
