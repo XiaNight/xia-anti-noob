@@ -198,7 +198,7 @@ class EventHandler:
                 self.Print('Not enough arguments')
                 return
             userInput = splits[0]
-            times splits[1]
+            times = splits[1]
             times = int(times)
             self.Print(XSF.fetch(userInput, times))
             # output = XSF.fetch(userInput, times)
