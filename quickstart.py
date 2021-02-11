@@ -25,6 +25,9 @@ class GoogldSheet():
 
     service = None
 
+    # The target spreadsheet we are using
+    spreadsheet_id = '1BCssfTKEBnOSO41Zq2XkGlbfNZJ5qCPeSzlfJersjzw'
+
     def __init__(self):
         """Shows basic usage of the Sheets API.
         Prints values from a sample spreadsheet.
@@ -50,11 +53,11 @@ class GoogldSheet():
 
         self.service = build('sheets', 'v4', credentials=creds)
 
-    def GetSheet(self, spreadsheetId, range):
+    def GetSheet(self, range):
 
         # Call the Sheets API
         sheet = self.service.spreadsheets()
-        result = sheet.values().get(spreadsheetId=spreadsheetId, range=range).execute()
+        result = sheet.values().get(spreadsheetId=self.spreadsheet_id, range=range).execute()
         values = result.get('values', [])
 
         if not values:
@@ -69,7 +72,7 @@ class GoogldSheet():
         # rows = result.get('values', [])
         # print('{0} rows retrieved.'.format(len(rows)))
 
-    def UpdateSheet(self, spreadsheet_id, table, cell, value):
+    def UpdateSheet(self, table, cell, value):
 
         # The A1 notation of the values to update.
         range_ = table + '!' + cell
@@ -85,10 +88,10 @@ class GoogldSheet():
             ]
         }
 
-        request = self.service.spreadsheets().values().update(spreadsheetId=spreadsheet_id, range=range_, valueInputOption=value_input_option, body=value_range_body)
+        request = self.service.spreadsheets().values().update(spreadsheetId=self.spreadsheet_id, range=range_, valueInputOption=value_input_option, body=value_range_body)
         response = request.execute()
 
-    def AddSheet(self, spreadsheet_id, title):
+    def AddSheet(self, title):
         body = {
           'requests': [
             {
@@ -110,13 +113,28 @@ class GoogldSheet():
           ]
         }
         sheet = self.service.spreadsheets()
-        result = sheet.batchUpdate(spreadsheetId=spreadsheet_id, body=body)
+        result = sheet.batchUpdate(spreadsheetId=self.spreadsheet_id, body=body)
         result.execute()
-        # print(result)
+        
+    def CheckIfSheetExists(self, sheet_name):
+        if sheet_name not in self.GetAllSheetNames():
+            return False
+        else:
+            return True
+
+    def GetAllSheetNames(self):
+        names = []
+        sheets = self.GetSheetData()['sheets']
+        for sheet in sheets:
+            names.append(sheet['properties']['title'])
+        return names
+
+    def GetSheetData(self):
+        sheet = self.service.spreadsheets()
+        result = sheet.get(spreadsheetId=self.spreadsheet_id)
+        return result.execute()
 
 if __name__ == '__main__':
 
-    MySheet = '1BCssfTKEBnOSO41Zq2XkGlbfNZJ5qCPeSzlfJersjzw'
-
     GS = GoogldSheet()
-    GS.AddSheet(MySheet, 'Sheet2')
+    print(GS.GetAllSheetNames())
