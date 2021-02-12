@@ -183,10 +183,10 @@ class EventHandler:
         perm = self.data.GetUserPermmisionLevel(self.sourceID, self.GetUserID())
 
         if self.event.source.type == 'user':
-            GS.AddUserIfNotExist(self.sourceID)
+            GS.AddIfUserNotExist(self.GetUserID())
         else:
             GS.CreateIfNotExist(self.sourceID)
-            GS.AddUserIfNotExist(self.GetUserID(), self.sourceID)
+            GS.AddIfUserNotExist(self.GetUserID(), self.sourceID)
 
         msg = self.event.message.text
         if msg[0] == '#': # Raw python code executing.
