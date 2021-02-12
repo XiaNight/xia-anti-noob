@@ -113,14 +113,7 @@ class EventHandler:
             # Add group to GroupJson if not exist.
             groups = GS.GetSheet('GroupJSON!A:A', majorDimension='COLUMNS')[0]
             if self.sourceID not in groups:
-                defaultJson = 
-                {
-                    'debug_mode': False,
-                    'KeyWords': 
-                    {
-
-                    }
-                }
+                defaultJson = {'debug_mode': False, 'KeyWords': {}}
                 GS.AppendValue('GroupJSON', [self.sourceID, str(defaultJson)])
             else:
                 sourceIndex = groups.index(self.sourceID())
