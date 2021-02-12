@@ -207,7 +207,7 @@ class EventHandler:
 
         msg = self.event.message.text
         if msg[0] == '#': # Raw python code executing.
-            if self.CheckPermissionLevel(self.GetUserID(), 4, logWarning=False): # Requires developer level to execute.
+            if self.CheckPermissionLevel(self.GetUserID(), perm, 4, logWarning=False): # Requires developer level to execute.
                 exec(compile(msg[1:],"-","exec"))
         elif msg[0] == '$': # Commands here.
             command = msg[1:]
