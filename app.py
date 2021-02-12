@@ -173,15 +173,13 @@ class EventHandler:
     
     def CheckKeyWord(self, keyword, userCmd, user_permission, required_permission = 1, logWarning = True):
         if userCmd == keyword:
-            if self.CheckPermissionLevel(userID=self.GetUserID(), required_permission=required_permission, logWarning=logWarning):
+            if self.CheckPermissionLevel(userID=self.GetUserID(), user_permission=user_permission, required_permission=required_permission, logWarning=logWarning):
                 return True
         return False
 
     # When user/group/room sends a message.
     def MessageEvent(self):
         self.data.UserUpdate(self.sourceID, self.GetUserID())
-        perm = self.data.GetUserPermmisionLevel(self.sourceID, self.GetUserID())
-
         userIndex = None
 
         if self.event.source.type == 'user':
@@ -213,11 +211,11 @@ class EventHandler:
                 exec(compile(msg[1:],"-","exec"))
         elif msg[0] == '$': # Commands here.
             command = msg[1:]
-            if self.CheckKeyWord('help', perm, command, 2):
+            if self.CheckKeyWord('help', command, perm, 2):
                 self.Print('$EnableDebug to enable debug\n$DisableDebug to disable debug\nstart with # to execute raw python code.')
-            if self.CheckKeyWord('EnableDebug', perm, command, 4):
+            if self.CheckKeyWord('EnableDebug', command, perm, 4):
                 self.EnableDebug()
-            if self.CheckKeyWord('DisableDebug', perm, command, 4):
+            if self.CheckKeyWord('DisableDebug', command, perm, 4):
                 self.DisableDebug()
         elif msg[0] == '%':
             splits = msg[1:].split(' ')
