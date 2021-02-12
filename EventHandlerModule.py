@@ -26,7 +26,7 @@ import sys
 import os
 
 class EventHandler:
-
+    global line_bot_api
     #Event
     event = None
 
