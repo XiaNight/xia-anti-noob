@@ -186,6 +186,7 @@ class EventHandler:
             GS.AddUserIfNotExist(self.sourceID)
         else:
             GS.CreateIfNotExist(self.sourceID)
+            GS.AddUserIfNotExist(self.GetUserID(), self.sourceID)
 
         msg = self.event.message.text
         if msg[0] == '#': # Raw python code executing.

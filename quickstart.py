@@ -69,8 +69,8 @@ class GoogldSheet():
         request = self.service.spreadsheets().values().update(spreadsheetId=self.spreadsheet_id, range=range_, valueInputOption=value_input_option, body=value_range_body)
         response = request.execute()
 
-    def AddUserIfNotExist(self, userID):
-
+    def AddUserIfNotExist(self, userID, sheet = 'Users'):
+        self.AppendValue(sheet, userID)
         pass
 
     def AppendValue(self, sheet, value):
