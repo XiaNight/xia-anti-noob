@@ -157,5 +157,5 @@ if __name__ == '__main__':
 
     GS = GoogldSheet()
     # GS.AddIfUserNotExist('TestUSER2')
-    print(GS.GetSheet('U336ffda1a1c754e257122c17c00b7e55'+ '!A:A', majorDimension='COLUMNS'))
+    print(GS.GetSheet('Cb8e23eab96206bc49a752bb10b2ae7af' + '!B1', majorDimension='COLUMNS'))
     # print(GS.GetAllUserName())
