@@ -27,8 +27,6 @@ import os
 
 class EventHandler:
 
-    data = Data()
-
     #Event
     event = None
 
@@ -48,11 +46,9 @@ class EventHandler:
         
         try:
             self.GetSource() # Get event source.
-            self.data.GroupUpdate(self.sourceID) # Update group statistics.
             self.replyToken = self.event.reply_token
             self.replyTokenUsed = False
 
-            debugMode = self.data.GetDebugMode(self.sourceID)
             if event.type == 'message':
                 self.MessageEvent()
             if event.type == 'memberJoined':
@@ -93,7 +89,6 @@ class EventHandler:
 
     # When user/group/room sends a message.
     def MessageEvent(self):
-        self.data.UserUpdate(self.sourceID, self.GetUserID())
         userIndex = None
 
         if self.event.source.type == 'user':
@@ -176,8 +171,6 @@ class EventHandler:
     def MemberJoinEvent(self):
         self.Print('User Joined')
 
-        self.data.AddUserToGroup(self.sourceID, self.GetUserID(), 1)
-
         userProfile = self.event.joined.members[0]
 
         self.Print('User ID: ' + userProfile.user_id)
@@ -214,7 +207,6 @@ class EventHandler:
     # When bot joins a group/room.
     def JoinEvent(self):
         self.Print('Bot Joined')
-        self.data.AddGroup(self.sourceID)
         pass
     
     # When user added bot as friend.
