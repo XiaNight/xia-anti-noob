@@ -70,6 +70,7 @@ class GoogldSheet():
         response = request.execute()
 
     def AddUserIfNotExist(self, userID, sheet = 'Users'):
+
         self.AppendValue(sheet, userID)
         pass
 
@@ -139,19 +140,27 @@ class GoogldSheet():
             names.append(sheet['properties']['title'])
         return names
 
-    def AddIfUserNotExist(self, userID):
-        if not self.CheckIfUserExist(userID):
-            self.AppendValue('Users', userID)
-    def CheckIfUserExist(self, userID):
-        if userID in self.GetAllUserName():
+    def AddIfUserNotExist(self, userID, sheet = None):
+        
+        if sheet == None:
+            if not self.CheckIfUserExist(userID, sheet):
+                self.AppendValue('Users', userID)
+        else:
+            if not self.CheckIfUserExist(userID, sheet):
+                self.AppendValue(sheet, userID)
+            pass
+    def CheckIfUserExist(self, userID, sheet = None):
+        if userID in self.GetAllUserName(sheet):
             return True
         else:
             return False
 
-    def GetAllUserName(self):
-        names = []
-        sheet = self.GetSheet('Users!A:A', majorDimension='COLUMNS')[0]
-        return sheet
+    def GetAllUserName(self, sheet = None):
+        if sheet == None:
+            names = self.GetSheet('Users!A:A', majorDimension='COLUMNS')[0]
+            return names
+        else:
+            names = self.GetSheet(sheet + '!A:A', majorDimension='COLUMNS')[0]
 
     def GetSheetData(self):
         sheet = self.service.spreadsheets()
