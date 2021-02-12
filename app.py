@@ -128,6 +128,8 @@ class EventHandler:
     replyTokenUsed = False
 
     debugMode = False
+    
+    sourceJSON = None
 
     def __init__(self):
         pass
@@ -167,8 +169,8 @@ class EventHandler:
             return True
         else:
             if logWarning:
-                self.Print("Permission denied, you have no permission to do this action.")
-                self.Print("Your level: " + str(user_permission) + " Required level: " + str(required_permission))
+                self.Print("Permission denied, you have no permission to do this action." + \
+                    "Your level: " + str(user_permission) + " Required level: " + str(required_permission))
             return False
     
     def CheckKeyWord(self, keyword, userCmd, user_permission, required_permission = 1, logWarning = True):
@@ -195,6 +197,15 @@ class EventHandler:
             # Create sheet if not exist
             if not GS.CheckIfSheetExists(self.sourceID): # If group id were not in the list.
                 GS.AddSheet(self.sourceID)
+
+            # Add group to GroupJson if not exist.
+            groups = GS.GetSheet('GroupJSON!A:A', majorDimension='COLUMNS')[0]
+            if self.sourceID not in groups:
+                defaultJson = {'debug_mode': False}
+                GS.AppendValue('GroupJSON', [self.sourceID, str(defaultJson)])
+            else:
+                sourceIndex = groups.index(self.sourceID())
+                sourceJSON = GS.GetSheet('GroupJSON!B' + str(sourceIndex + 1))[0][0] # +1 because sheet row starts with 1.
 
             # Add user to group if user not exist.
             usernames = GS.GetSheet(self.sourceID + '!A:A', majorDimension='COLUMNS')[0] # Get all usernames in the group.
