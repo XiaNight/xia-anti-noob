@@ -49,6 +49,23 @@ def imagemap_message():
     )
     return message
 
+def sharp_head_image_message():
+    message = ImagemapSendMessage(
+        base_url="https://i.ytimg.com/vi/52JpS9CxH4E/maxresdefault.jpg",
+        alt_text='最新的合作廠商有誰呢？',
+        base_size=BaseSize(height=2000, width=2000),
+        actions=[
+            URIImagemapAction(
+                #家樂福
+                link_uri="https://i.ytimg.com/vi/52JpS9CxH4E/maxresdefault.jpg",
+                area=ImagemapArea(
+                    x=0, y=0, width=1000, height=1000
+                )
+            )
+        ]
+    )
+    return message
+
 #TemplateSendMessage - ButtonsTemplate (按鈕介面訊息)
 def buttons_message():
     message = TemplateSendMessage(

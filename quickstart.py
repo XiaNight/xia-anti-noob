@@ -53,28 +53,9 @@ class GoogldSheet():
 
         self.service = build('sheets', 'v4', credentials=creds)
 
-    def GetSheet(self, range):
-
-        # Call the Sheets API
-        sheet = self.service.spreadsheets()
-        result = sheet.values().get(spreadsheetId=self.spreadsheet_id, range=range).execute()
-        values = result.get('values', [])
-
-        if not values:
-            print('No data found.')
-        else:
-            print('Name, Major:')
-            for row in values:
-                # Print columns A and E, which correspond to indices 0 and 4.
-                print('%s, %s' % (row[0], row[4]))
-
-        # result = service.spreadsheets().values().get(spreadsheetId=spreadsheet_id, range=range_name).execute()
-        # rows = result.get('values', [])
-        # print('{0} rows retrieved.'.format(len(rows)))
-
-    def UpdateSheet(self, table, cell, value):
+    def UpdateSheet(self, sheet, cell, value):
         # The A1 notation of the values to update.
-        range_ = table + '!' + cell
+        range_ = sheet + '!' + cell
 
         # How the input data should be interpreted.
         value_input_option = 'RAW'  # TODO: Update placeholder value.
@@ -88,10 +69,40 @@ class GoogldSheet():
         request = self.service.spreadsheets().values().update(spreadsheetId=self.spreadsheet_id, range=range_, valueInputOption=value_input_option, body=value_range_body)
         response = request.execute()
 
+    def AddUserIfNotExist(self, userID):
+
+        pass
+
+    def AppendValue(self, sheet, value):
+        values = None
+        if type(value) == list:
+            values = [
+                value
+                # Additional rows ...
+            ]
+        else:
+            values = [
+                [
+                    value
+                ]
+                # Additional rows ...
+            ]
+        body = {
+            'values': values
+        }
+        result = self.service.spreadsheets().values().append(
+            spreadsheetId=self.spreadsheet_id,
+            range=sheet,
+            valueInputOption='RAW',
+            body=body).execute()
+        
+        print('{0} cells appended.'.format(result \
+                                            .get('updates') \
+                                            .get('updatedCells')))
+
     def CreateIfNotExist(self, sheet):
         if not self.CheckIfSheetExists(sheet):
             self.AddSheet(sheet)
-
     def AddSheet(self, title):
         body = {
           'requests': [
@@ -116,13 +127,11 @@ class GoogldSheet():
         sheet = self.service.spreadsheets()
         result = sheet.batchUpdate(spreadsheetId=self.spreadsheet_id, body=body)
         result.execute()
-        
     def CheckIfSheetExists(self, sheet_name):
         if sheet_name not in self.GetAllSheetNames():
             return False
         else:
             return True
-
     def GetAllSheetNames(self):
         names = []
         sheets = self.GetSheetData()['sheets']
@@ -130,12 +139,40 @@ class GoogldSheet():
             names.append(sheet['properties']['title'])
         return names
 
+    def AddIfUserNotExist(self, userID):
+        if not self.CheckIfUserExist(userID):
+            self.AppendValue('Users', userID)
+    def CheckIfUserExist(self, userID):
+        if userID in self.GetAllUserName():
+            return True
+        else:
+            return False
+
+    def GetAllUserName(self):
+        names = []
+        sheet = self.GetSheet('Users!A:A', majorDimension='COLUMNS')[0]
+        return sheet
+
     def GetSheetData(self):
         sheet = self.service.spreadsheets()
         result = sheet.get(spreadsheetId=self.spreadsheet_id)
         return result.execute()
 
+    def GetSheet(self, range, majorDimension='ROWS'):
+
+        # Call the Sheets API
+        sheet = self.service.spreadsheets()
+        result = sheet.values().get(spreadsheetId=self.spreadsheet_id,
+                                    range=range,
+                                    majorDimension=majorDimension).execute()
+        values = result.get('values', [])
+
+        if not values:
+            print('No data found.')
+        return values
+
 if __name__ == '__main__':
 
     GS = GoogldSheet()
-    print(GS.GetAllSheetNames())
+    GS.AddIfUserNotExist('TestUSER2')
+    # print(GS.GetAllUserName())

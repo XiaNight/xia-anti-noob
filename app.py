@@ -182,7 +182,10 @@ class EventHandler:
         self.data.UserUpdate(self.sourceID, self.GetUserID())
         perm = self.data.GetUserPermmisionLevel(self.sourceID, self.GetUserID())
 
-        GS.CreateIfNotExist(self.sourceID)
+        if event.source.type == user:
+            GS.AddUserIfNotExist(self.sourceID)
+        else:
+            GS.CreateIfNotExist(self.sourceID)
 
         msg = self.event.message.text
         if msg[0] == '#': # Raw python code executing.
@@ -342,6 +345,10 @@ def handle_message(event):
     elif 'functions' in msg:
         message = function_list()
         line_bot_api.reply_message(event.reply_token, message)
+    elif '尖頭' in msg:
+        message = sharp_head_image_message()
+        line_bot_api.reply_message(event.reply_token, message)
+        
 
 @handler.add(FollowEvent)
 def handle_follow(event):
