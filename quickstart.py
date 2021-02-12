@@ -156,6 +156,7 @@ class GoogldSheet():
             return names
         else:
             names = self.GetSheet(sheet + '!A:A', majorDimension='COLUMNS')[0]
+            return names
 
     def GetSheetData(self):
         sheet = self.service.spreadsheets()
@@ -173,10 +174,12 @@ class GoogldSheet():
 
         if not values:
             print('No data found.')
+            return [[]] # return empty rows and columes
         return values
 
 if __name__ == '__main__':
 
     GS = GoogldSheet()
-    GS.AddIfUserNotExist('TestUSER2')
+    # GS.AddIfUserNotExist('TestUSER2')
+    print(GS.GetSheet('U336ffda1a1c754e257122c17c00b7e55'+ '!A:A', majorDimension='COLUMNS'))
     # print(GS.GetAllUserName())
