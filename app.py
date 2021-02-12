@@ -158,7 +158,8 @@ class EventHandler:
 
         except Exception as e: # Error handler
             print(sys.exc_info())
-            self.Print(str(e))
+            print(str(e))
+            self.Print('An error has occurred')
 
     # Return true if user's permission level is reached the required.
     def CheckPermissionLevel(self, userID, permRequire, logWarning = True):
