@@ -34,8 +34,6 @@ import os
 
 app = Flask(__name__)
 static_tmp_path = os.path.join(os.path.dirname(__file__), 'static', 'tmp')
-# Channel Access Token
-line_bot_api = LineBotApi('cwBEnoA7OI09xMRwZj2JGgVLTiCY8h2fraLjFmwDMHx+JXKuewOBE5eh6xUCIt+1VQOoPVmUlow5xkZDY1oPY7yYPFcd9rN2JqtwCGH3X9Q59VnjPuC4dOqgvXpfW9P3JOgAjgkg+kVFh8yl4wEBJAdB04t89/1O/w1cDnyilFU=')
 # Channel Secret
 handler = WebhookHandler('613e26ffd74fdb430ae58f71af00eedc')
 
@@ -127,28 +125,28 @@ def handle_member_left(event):
 def handle_message(event):
     EH.OnEventGet(event)
 
-    msg = event.message.text
-    if 'new fact' in msg:
-        message = imagemap_message()
-        line_bot_api.reply_message(event.reply_token, message)
-    elif 'new action' in msg:
-        message = buttons_message()
-        line_bot_api.reply_message(event.reply_token, message)
-    elif 'vip' in msg:
-        message = Confirm_Template()
-        line_bot_api.reply_message(event.reply_token, message)
-    elif 'horse' in msg:
-        message = Carousel_Template()
-        line_bot_api.reply_message(event.reply_token, message)
-    elif 'pictures' in msg:
-        message = test()
-        line_bot_api.reply_message(event.reply_token, message)
-    elif 'functions' in msg:
-        message = function_list()
-        line_bot_api.reply_message(event.reply_token, message)
-    elif '尖頭' in msg:
-        message = sharp_head_image_message()
-        line_bot_api.reply_message(event.reply_token, message)
+    # msg = event.message.text
+    # if 'new fact' in msg:
+    #     message = imagemap_message()
+    #     line_bot_api.reply_message(event.reply_token, message)
+    # elif 'new action' in msg:
+    #     message = buttons_message()
+    #     line_bot_api.reply_message(event.reply_token, message)
+    # elif 'vip' in msg:
+    #     message = Confirm_Template()
+    #     line_bot_api.reply_message(event.reply_token, message)
+    # elif 'horse' in msg:
+    #     message = Carousel_Template()
+    #     line_bot_api.reply_message(event.reply_token, message)
+    # elif 'pictures' in msg:
+    #     message = test()
+    #     line_bot_api.reply_message(event.reply_token, message)
+    # elif 'functions' in msg:
+    #     message = function_list()
+    #     line_bot_api.reply_message(event.reply_token, message)
+    # elif '尖頭' in msg:
+    #     message = sharp_head_image_message()
+    #     line_bot_api.reply_message(event.reply_token, message)
 
 @handler.add(FollowEvent)
 def handle_follow(event):
