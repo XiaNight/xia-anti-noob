@@ -117,7 +117,7 @@ class EventHandler:
                 defaultJson = {'debug_mode': False, 'KeyWords': {}}
                 GS.AppendValue('GroupJSON', [self.sourceID, str(defaultJson)])
             else:
-                sourceIndex = groups.index(self.sourceID())
+                sourceIndex = groups.index(self.sourceID)
                 sourceJSON = GS.GetSheet('GroupJSON!B' + str(sourceIndex + 1))[0][0] # +1 because sheet row starts with 1.
 
             # Add user to group if user not exist.
