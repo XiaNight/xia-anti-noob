@@ -162,19 +162,18 @@ class EventHandler:
             self.Print('An error has occurred')
 
     # Return true if user's permission level is reached the required.
-    def CheckPermissionLevel(self, userID, permRequire, logWarning = True):
-        userPerm = self.data.GetUserPermmisionLevel(self.sourceID, userID)
-        if userPerm >= permRequire:
+    def CheckPermissionLevel(self, userID, user_permission, required_permission, logWarning = True):
+        if user_permission >= required_permission:
             return True
         else:
             if logWarning:
                 self.Print("Permission denied, you have no permission to do this action.")
-                self.Print("Your level: " + str(userPerm) + " Required level: " + str(permRequire))
+                self.Print("Your level: " + str(user_permission) + " Required level: " + str(required_permission))
             return False
     
-    def CheckKeyWord(self, keyword, userCmd, permission = 1, logWarning = True):
+    def CheckKeyWord(self, keyword, userCmd, user_permission, required_permission = 1, logWarning = True):
         if userCmd == keyword:
-            if self.CheckPermissionLevel(self.GetUserID(), permission, logWarning=logWarning):
+            if self.CheckPermissionLevel(userID=self.GetUserID(), required_permission=required_permission, logWarning=logWarning):
                 return True
         return False
 
@@ -214,11 +213,11 @@ class EventHandler:
                 exec(compile(msg[1:],"-","exec"))
         elif msg[0] == '$': # Commands here.
             command = msg[1:]
-            if self.CheckKeyWord('help', command, 2):
+            if self.CheckKeyWord('help', perm, command, 2):
                 self.Print('$EnableDebug to enable debug\n$DisableDebug to disable debug\nstart with # to execute raw python code.')
-            if self.CheckKeyWord('EnableDebug', command, 4):
+            if self.CheckKeyWord('EnableDebug', perm, command, 4):
                 self.EnableDebug()
-            if self.CheckKeyWord('DisableDebug', command, 4):
+            if self.CheckKeyWord('DisableDebug', perm, command, 4):
                 self.DisableDebug()
         elif msg[0] == '%':
             splits = msg[1:].split(' ')
