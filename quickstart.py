@@ -141,14 +141,14 @@ class GoogldSheet():
         return names
 
     def AddIfUserNotExist(self, userID, sheet = None):
-        
         if sheet == None:
             if not self.CheckIfUserExist(userID, sheet):
                 self.AppendValue('Users', userID)
+                print('Adding User: ' + userID)
         else:
             if not self.CheckIfUserExist(userID, sheet):
                 self.AppendValue(sheet, userID)
-            pass
+                print('Adding User to Group: ' + sheet + 'User: ' + userID)
     def CheckIfUserExist(self, userID, sheet = None):
         if userID in self.GetAllUserName(sheet):
             return True
