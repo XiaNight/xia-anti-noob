@@ -83,7 +83,6 @@ if __name__ == '__main__':
 	times = int(times)
 	while(userInput != "-1"):
 
-		
 		print(XSF.fetch(userInput, times))
 
 		userInput, times = input().split(' ')

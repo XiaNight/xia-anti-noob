@@ -99,7 +99,7 @@ class EventHandler:
 
         if self.event.source.type == 'user':
             # Add user to Users if user not exist.
-            usernames = GS.GetSheet('Users!A:A', majorDimension='COLUMNS')[0] # Get all usernames in sheet 'Users'.
+            usernames = self.GetAllUsernames('Users') # Get all usernames in sheet 'Users'.
             if self.GetUserID() not in usernames:
                 GS.AppendValue('Users', [self.GetUserID(), 1, self.event.timestamp])
                 userIndex = len(usernames)
@@ -112,7 +112,7 @@ class EventHandler:
                 GS.AddSheet(self.sourceID)
 
             # Add group to GroupJson if not exist.
-            groups = GS.GetSheet('GroupJSON!A:A', majorDimension='COLUMNS')[0]
+            groups = self.GetAllUsernames('GroupJSON')
             if self.sourceID not in groups:
                 defaultJson = {'debug_mode': False, 'KeyWords': {}}
                 GS.AppendValue('GroupJSON', [self.sourceID, str(defaultJson)])
@@ -121,7 +121,7 @@ class EventHandler:
                 sourceJSON = GS.GetSheet('GroupJSON!B' + str(sourceIndex + 1))[0][0] # +1 because sheet row starts with 1.
 
             # Add user to group if user not exist.
-            usernames = GS.GetSheet(self.sourceID + '!A:A', majorDimension='COLUMNS')[0] # Get all usernames in the group.
+            usernames = self.GetAllUsernames(self.sourceID)
             if self.GetUserID() not in usernames: # If username were not in the list.
                 GS.AppendValue(self.sourceID, [self.GetUserID(), 1, self.event.timestamp])
                 userIndex = len(usernames)
@@ -155,6 +155,10 @@ class EventHandler:
             #     self.Print(t)
             #     pass
             pass
+
+    # Get all usernames in the sheet.
+    def GetAllUsernames(self, sheet):
+        return GS.GetSheet(sheet + '!A:A', majorDimension='COLUMNS')[0]
 
     # Gets the source of the event and store it.
     def GetSource(self):
