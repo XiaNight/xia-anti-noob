@@ -190,7 +190,7 @@ class EventHandler:
                 userIndex = len(usernames)
             else:
                 userIndex = usernames.index(self.GetUserID()) # Get user index in usernames.
-                perm = GS.GetSheet('Users!B' + str(userIndex + 1))[0][0] # +1 because sheet row starts with 1.
+                perm = int(GS.GetSheet('Users!B' + str(userIndex + 1))[0][0]) # +1 because sheet row starts with 1.
         else:
             # Create sheet if not exist
             if not GS.CheckIfSheetExists(self.sourceID): # If group id were not in the list.
@@ -203,7 +203,7 @@ class EventHandler:
                 userIndex = len(usernames)
             else:
                 userIndex = usernames.index(self.GetUserID()) # Get user index in usernames.
-                perm = GS.GetSheet(self.sourceID + '!B' + str(userIndex + 1))[0][0] # +1 because sheet row starts with 1.
+                perm = int(GS.GetSheet(self.sourceID + '!B' + str(userIndex + 1))[0][0]) # +1 because sheet row starts with 1.
 
         msg = self.event.message.text
         if msg[0] == '#': # Raw python code executing.
