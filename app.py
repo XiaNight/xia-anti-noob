@@ -345,9 +345,9 @@ def handle_message(event):
     elif 'functions' in msg:
         message = function_list()
         line_bot_api.reply_message(event.reply_token, message)
-    elif '尖頭' in msg:
-        message = sharp_head_image_message()
-        line_bot_api.reply_message(event.reply_token, message)
+    # elif '尖頭' in msg:
+    #     message = sharp_head_image_message()
+    #     line_bot_api.reply_message(event.reply_token, message)
         
 
 @handler.add(FollowEvent)

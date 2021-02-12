@@ -52,7 +52,7 @@ def imagemap_message():
 def sharp_head_image_message():
     message = ImagemapSendMessage(
         base_url="https://i.ytimg.com/vi/52JpS9CxH4E/maxresdefault.jpg",
-        alt_text='最新的合作廠商有誰呢？',
+        alt_text='尖頭拉瑞是誰呢??',
         base_size=BaseSize(height=2000, width=2000),
         actions=[
             URIImagemapAction(
