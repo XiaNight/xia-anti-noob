@@ -53,7 +53,7 @@ class GoogldSheet():
 
         self.service = build('sheets', 'v4', credentials=creds)
 
-    def UpdateSheet(self, sheet, cell, value):
+    def UpdateCell(self, sheet, cell, value):
         # The A1 notation of the values to update.
         range_ = sheet + '!' + cell
 
@@ -95,7 +95,6 @@ class GoogldSheet():
         print('{0} cells appended.'.format(result \
                                             .get('updates') \
                                             .get('updatedCells')))
-
     def CreateIfNotExist(self, sheet):
         if not self.CheckIfSheetExists(sheet):
             self.AddSheet(sheet)
@@ -134,29 +133,6 @@ class GoogldSheet():
         for sheet in sheets:
             names.append(sheet['properties']['title'])
         return names
-
-    def AddIfUserNotExist(self, userID, sheet = None):
-        if sheet == None:
-            if not self.CheckIfUserExist(userID, sheet):
-                self.AppendValue('Users', userID)
-                print('Adding User: ' + userID)
-        else:
-            if not self.CheckIfUserExist(userID, sheet):
-                self.AppendValue(sheet, userID)
-                print('Adding User to Group: ' + sheet + 'User: ' + userID)
-    def CheckIfUserExist(self, userID, sheet = None):
-        if userID in self.GetAllUserName(sheet):
-            return True
-        else:
-            return False
-
-    def GetAllUserName(self, sheet = None):
-        if sheet == None:
-            names = self.GetSheet('Users!A:A', majorDimension='COLUMNS')[0]
-            return names
-        else:
-            names = self.GetSheet(sheet + '!A:A', majorDimension='COLUMNS')[0]
-            return names
 
     def GetSheetData(self):
         sheet = self.service.spreadsheets()

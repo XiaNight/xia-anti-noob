@@ -183,10 +183,19 @@ class EventHandler:
         perm = self.data.GetUserPermmisionLevel(self.sourceID, self.GetUserID())
 
         if self.event.source.type == 'user':
-            GS.AddIfUserNotExist(self.GetUserID())
+            # Add user to Users if user not exist.
+            usernames = GS.GetSheet('Users!A:A', majorDimension='COLUMNS')[0] # Get all usernames in sheet 'Users'.
+            if self.GetUserID() not in usernames:
+                GS.AppendValue('Users', self.GetUserID())
         else:
-            GS.CreateIfNotExist(self.sourceID)
-            GS.AddIfUserNotExist(self.GetUserID(), self.sourceID)
+            # Create sheet if not exist
+            if not GS.CheckIfSheetExists(self.sourceID): # If group id were not in the list
+                GS.AddSheet(self.sourceID)
+
+            # Add user to group if user not exist.
+            usernames = GS.GetSheet(self.sourceID + '!A:A', majorDimension='COLUMNS')[0] # Get all usernames in the group.
+            if self.GetUserID() not in usernames: # If username were not in the list.
+                GS.AppendValue(self.sourceID, self.GetUserID())
 
         msg = self.event.message.text
         if msg[0] == '#': # Raw python code executing.
