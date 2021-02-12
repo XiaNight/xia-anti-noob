@@ -191,7 +191,7 @@ class EventHandler:
                 GS.AppendValue('Users', [self.GetUserID(), 1, self.event.timestamp])
                 userIndex = len(usernames)
             else:
-                userIndex = usernames.index(self.sourceID)
+                userIndex = usernames.index(self.GetUserID())
         else:
             # Create sheet if not exist
             if not GS.CheckIfSheetExists(self.sourceID): # If group id were not in the list
@@ -203,7 +203,7 @@ class EventHandler:
                 GS.AppendValue(self.sourceID, [self.GetUserID(), 1, self.event.timestamp])
                 userIndex = len(usernames)
             else:
-                userIndex = usernames.index(self.sourceID)
+                userIndex = usernames.index(self.GetUserID())
 
         msg = self.event.message.text
         if msg[0] == '#': # Raw python code executing.
