@@ -109,8 +109,6 @@ def callback():
     return 'OK'
 
 EH = EventHandler()
-XSF = XStandFor()
-GS = GoogldSheet()
 
 @handler.add(MemberJoinedEvent)
 def handle_member_joined(event):

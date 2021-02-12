@@ -77,9 +77,7 @@ class XStandFor:
 		rand = random.randint(0, len(LIST) - 1)
 		return LIST[rand]
 
-
-
-def Main():
+if __name__ == '__main__':
 	XSF = XStandFor()
 	userInput, times = input().split(' ')
 	times = int(times)
@@ -90,7 +88,3 @@ def Main():
 
 		userInput, times = input().split(' ')
 		times = int(times)
-
-
-if __name__ == '__main__':
-	Main()

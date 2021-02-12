@@ -28,6 +28,9 @@ import os
 # Channel Access Token
 line_bot_api = LineBotApi('cwBEnoA7OI09xMRwZj2JGgVLTiCY8h2fraLjFmwDMHx+JXKuewOBE5eh6xUCIt+1VQOoPVmUlow5xkZDY1oPY7yYPFcd9rN2JqtwCGH3X9Q59VnjPuC4dOqgvXpfW9P3JOgAjgkg+kVFh8yl4wEBJAdB04t89/1O/w1cDnyilFU=')
 
+XSF = XStandFor()
+GS = GoogldSheet()
+
 class EventHandler:
     
     #Event
@@ -244,3 +247,6 @@ class EventHandler:
     def DisableDebug(self):
         self.Print('Debug Disabled')
         self.debugMode = False
+
+if __name__ == '__main__':
+    EH = EventHandler()
