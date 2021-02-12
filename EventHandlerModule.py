@@ -121,6 +121,7 @@ class EventHandler:
             # Add group to GroupJson if not exist.
             print('Check if group exist in GroupJSON.')
             groups = self.GetAllUsernames('GroupJSON')
+            print('Found {0} groups in group'.format(len(groups)))
             if self.sourceID not in groups:
                 print('Adding group to GroupJSON.')
                 defaultJson = {'debug_mode': False, 'KeyWords': {}}
@@ -133,6 +134,7 @@ class EventHandler:
             # Add user to group if user not exist.
             print('Check if user exist in group.')
             usernames = self.GetAllUsernames(self.sourceID)
+            print('Found {0} users in group'.format(len(usernames)))
             if self.GetUserID() not in usernames: # If username were not in the list.
                 print('Adding user to group.')
                 GS.AppendValue(self.sourceID, [self.GetUserID(), 1, self.event.timestamp])
@@ -141,7 +143,7 @@ class EventHandler:
                 print('User exist in group.')
                 userIndex = usernames.index(self.GetUserID()) # Get user index in usernames.
                 perm = int(GS.GetSheet(self.sourceID + '!B' + str(userIndex + 1))[0][0]) # +1 because sheet row starts with 1.
-
+            print('Group check done.')
         msg = self.event.message.text
         if msg[0] == '#': # Raw python code executing.
             if self.CheckPermissionLevel(self.GetUserID(), perm, 4, logWarning=False): # Requires developer level to execute.
@@ -162,11 +164,9 @@ class EventHandler:
             userInput = splits[0]
             times = splits[1]
             times = int(times)
+            if times > 30: # Safty guard.
+                times = 30
             self.Print(XSF.fetch(userInput, times))
-            # output = XSF.fetch(userInput, times)
-            # for t in output:
-            #     self.Print(t)
-            #     pass
             pass
 
     # Get all usernames in the sheet.
