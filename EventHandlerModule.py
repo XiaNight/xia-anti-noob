@@ -96,36 +96,49 @@ class EventHandler:
     # When user/group/room sends a message.
     def MessageEvent(self):
         userIndex = None
-
+        print('Handling messageEvent, type = ' + self.event.source.type)
         if self.event.source.type == 'user':
             # Add user to Users if user not exist.
+            print('Check if user exist in Users')
             usernames = self.GetAllUsernames('Users') # Get all usernames in sheet 'Users'.
             if self.GetUserID() not in usernames:
+                print('Adding user to Users')
                 GS.AppendValue('Users', [self.GetUserID(), 1, self.event.timestamp])
                 userIndex = len(usernames)
             else:
+                print('User exist in Users.')
                 userIndex = usernames.index(self.GetUserID()) # Get user index in usernames.
                 perm = int(GS.GetSheet('Users!B' + str(userIndex + 1))[0][0]) # +1 because sheet row starts with 1.
         else:
             # Create sheet if not exist
+            print('Check if sheet exist')
             if not GS.CheckIfSheetExists(self.sourceID): # If group id were not in the list.
+                print('Adding new sheet')
                 GS.AddSheet(self.sourceID)
+            else:
+                print('Sheet exist.')
 
             # Add group to GroupJson if not exist.
+            print('Check if group exist in GroupJSON.')
             groups = self.GetAllUsernames('GroupJSON')
             if self.sourceID not in groups:
+                print('Adding group to GroupJSON.')
                 defaultJson = {'debug_mode': False, 'KeyWords': {}}
                 GS.AppendValue('GroupJSON', [self.sourceID, str(defaultJson)])
             else:
+                print('Group exist in GroupJSON.')
                 sourceIndex = groups.index(self.sourceID)
                 sourceJSON = GS.GetSheet('GroupJSON!B' + str(sourceIndex + 1))[0][0] # +1 because sheet row starts with 1.
 
             # Add user to group if user not exist.
+            print('Check if user exist in group.')
             usernames = self.GetAllUsernames(self.sourceID)
             if self.GetUserID() not in usernames: # If username were not in the list.
+                print('Adding user to group.')
                 GS.AppendValue(self.sourceID, [self.GetUserID(), 1, self.event.timestamp])
                 userIndex = len(usernames)
             else:
+                print('User exist in group.')
                 userIndex = usernames.index(self.GetUserID()) # Get user index in usernames.
                 perm = int(GS.GetSheet(self.sourceID + '!B' + str(userIndex + 1))[0][0]) # +1 because sheet row starts with 1.
 
