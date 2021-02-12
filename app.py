@@ -181,6 +181,9 @@ class EventHandler:
     def MessageEvent(self):
         self.data.UserUpdate(self.sourceID, self.GetUserID())
         perm = self.data.GetUserPermmisionLevel(self.sourceID, self.GetUserID())
+
+        GS.CreateIfNotExist(self.sourceID)
+
         msg = self.event.message.text
         if msg[0] == '#': # Raw python code executing.
             if self.CheckPermissionLevel(self.GetUserID(), 4, logWarning=False): # Requires developer level to execute.
@@ -188,7 +191,7 @@ class EventHandler:
         elif msg[0] == '$': # Commands here.
             command = msg[1:]
             if self.CheckKeyWord('help', command, 2):
-                self.Print('$EnableDebug() to enable debug\n$DisableDebug() to disable debug\nstart with # to execute raw python code.')
+                self.Print('$EnableDebug to enable debug\n$DisableDebug to disable debug\nstart with # to execute raw python code.')
             if self.CheckKeyWord('EnableDebug', command, 4):
                 self.EnableDebug()
             if self.CheckKeyWord('DisableDebug', command, 4):
@@ -305,6 +308,7 @@ class EventHandler:
 
 EH = EventHandler()
 XSF = XStandFor()
+GS = GoogldSheet()
 
 @handler.add(MemberJoinedEvent)
 def handle_member_joined(event):
@@ -399,4 +403,3 @@ if __name__ == "__main__":
     port = int(os.environ.get('PORT', 5000))
     app.run(host='0.0.0.0', port=port)
     print('Bot Ready')
-    SendTextMessage('Ud631fff6ef744ccc6fce86b5e1d1b4bb', 'Bot Ready.')

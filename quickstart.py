@@ -73,13 +73,11 @@ class GoogldSheet():
         # print('{0} rows retrieved.'.format(len(rows)))
 
     def UpdateSheet(self, table, cell, value):
-
         # The A1 notation of the values to update.
         range_ = table + '!' + cell
 
         # How the input data should be interpreted.
         value_input_option = 'RAW'  # TODO: Update placeholder value.
-
         value_range_body = {
             "values": [
                 [
@@ -87,9 +85,12 @@ class GoogldSheet():
                 ]
             ]
         }
-
         request = self.service.spreadsheets().values().update(spreadsheetId=self.spreadsheet_id, range=range_, valueInputOption=value_input_option, body=value_range_body)
         response = request.execute()
+
+    def CreateIfNotExist(self, sheet):
+        if not self.CheckIfSheetExists(sheet):
+            self.AddSheet(sheet)
 
     def AddSheet(self, title):
         body = {
