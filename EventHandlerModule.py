@@ -108,7 +108,7 @@ class EventHandler:
             else:
                 print('User exist in Users.')
                 userIndex = usernames.index(self.GetUserID()) # Get user index in usernames.
-                perm = int(GS.GetSheet('Users!B' + str(userIndex + 1))[0][0]) # +1 because sheet row starts with 1.
+                perm = int(GS.GetRange('Users!B' + str(userIndex + 1))[0][0]) # +1 because sheet row starts with 1.
         else:
             # Create sheet if not exist
             print('Check if sheet exist')
@@ -129,7 +129,7 @@ class EventHandler:
             else:
                 print('Group exist in GroupJSON.')
                 sourceIndex = groups.index(self.sourceID)
-                sourceJSON = GS.GetSheet('GroupJSON!B' + str(sourceIndex + 1))[0][0] # +1 because sheet row starts with 1.
+                sourceJSON = GS.GetRange('GroupJSON!B' + str(sourceIndex + 1))[0][0] # +1 because sheet row starts with 1.
 
             # Add user to group if user not exist.
             print('Check if user exist in group.')
@@ -142,7 +142,7 @@ class EventHandler:
             else:
                 print('User exist in group.')
                 userIndex = usernames.index(self.GetUserID()) # Get user index in usernames.
-                perm = int(GS.GetSheet(self.sourceID + '!B' + str(userIndex + 1))[0][0]) # +1 because sheet row starts with 1.
+                perm = int(GS.GetRange(self.sourceID + '!B' + str(userIndex + 1))[0][0]) # +1 because sheet row starts with 1.
             print('Group check done.')
         msg = self.event.message.text
         if msg[0] == '#': # Raw python code executing.
@@ -171,7 +171,7 @@ class EventHandler:
 
     # Get all usernames in the sheet.
     def GetAllUsernames(self, sheet):
-        return GS.GetSheet(sheet + '!A:A', majorDimension='COLUMNS')[0]
+        return GS.GetRange(sheet + '!A:A', majorDimension='COLUMNS')[0]
 
     # Gets the source of the event and store it.
     def GetSource(self):
