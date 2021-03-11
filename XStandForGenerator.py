@@ -1,4 +1,5 @@
 import random
+import string
 
 from google_trans_new import google_translator
 translator = google_translator()  
@@ -29,9 +30,11 @@ class XStandFor:
 
 		
 		for text in self.texts:
+
 			if text[0] not in self.classified:
 				self.classified[text[0]] = []
-			self.classified[text[0]].append(text)
+			if '-' not in text:
+				self.classified[text[0]].append(text)
 		print('init done')
 
 
@@ -54,7 +57,28 @@ class XStandFor:
 			# 	print(t)
 			
 			translations = translator.translate(sentence, lang_tgt='zh-tw')
-			out += '\t' + translations
+
+			filtered = ''
+			temp = ''
+			found = False
+			print(i+1, translations)
+			for t in range(len(translations)):
+				if is_ascii(translations[t]) and translations[t] != ' ':
+					if found == False:
+						temp = ''
+						found = True
+					temp += translations[t]
+				else:
+					if found:
+						found = False
+						translated = translator.translate(temp, lang_tgt='zh-tw')
+						filtered += merge_collection(remove_ascii(translated))
+						print(temp, translated, merge_collection(remove_ascii(translated)))
+					else:
+						filtered += translations[t]
+
+
+			out += '\t' + filtered
 			output += out + '\n\n'
 		return output
 
@@ -77,13 +101,35 @@ class XStandFor:
 		rand = random.randint(0, len(LIST) - 1)
 		return LIST[rand]
 
-if __name__ == '__main__':
+ascii = set(string.printable)
+def is_ascii(s):
+	return s in ascii
+def is_not_ascii(s):
+	return not  (s in ascii)
+
+def remove_non_ascii(s):
+    return filter(lambda x: is_ascii(x), s)
+def remove_ascii(s):
+    return filter(lambda x: is_not_ascii(x), s)
+
+def merge_collection(c):
+	output = ''
+	for a in remove_non_ascii(c):
+		output += a
+	return output
+
+def Main():
 	XSF = XStandFor()
 	userInput, times = input().split(' ')
 	times = int(times)
 	while(userInput != "-1"):
 
+		
 		print(XSF.fetch(userInput, times))
 
 		userInput, times = input().split(' ')
 		times = int(times)
+
+
+if __name__ == '__main__':
+	Main()
