@@ -72,8 +72,8 @@ class XStandFor:
 					if found:
 						found = False
 						translated = translator.translate(temp, lang_tgt='zh-tw')
-						filtered += merge_collection(remove_ascii(translated))
-						print(temp, translated, merge_collection(remove_ascii(translated)))
+						filtered += remove_ascii(translated)
+						print(temp, translated, remove_ascii(translated))
 					else:
 						filtered += translations[t]
 
@@ -105,12 +105,16 @@ ascii = set(string.printable)
 def is_ascii(s):
 	return s in ascii
 def is_not_ascii(s):
-	return not  (s in ascii)
+	return s not in ascii
 
 def remove_non_ascii(s):
     return filter(lambda x: is_ascii(x), s)
 def remove_ascii(s):
-    return filter(lambda x: is_not_ascii(x), s)
+	output = ''
+	for a in s:
+		if a not in ascii:
+			output += a
+	return output
 
 def merge_collection(c):
 	output = ''
@@ -119,6 +123,9 @@ def merge_collection(c):
 	return output
 
 def Main():
+
+	print(remove_ascii('s貓'))
+
 	XSF = XStandFor()
 	userInput, times = input().split(' ')
 	times = int(times)
