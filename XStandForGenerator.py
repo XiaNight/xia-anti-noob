@@ -37,6 +37,26 @@ class XStandFor:
 				self.classified[text[0]].append(text)
 		print('init done')
 
+	def tryTranslate(self, words):
+		filtered = ''
+		temp = ''
+		found = False
+		for t in range(len(translations)):
+			if is_ascii(translations[t]) and translations[t] != ' ':
+				if found == False:
+					temp = ''
+					found = True
+				temp += translations[t]
+			else:
+				if found:
+					found = False
+					translated = translator.translate(temp, lang_tgt='zh-tw')
+					filtered += remove_ascii(translated)
+				else:
+					filtered += translations[t]
+
+	def idea_transformer(self, keyword, iterations = 5):
+		return translations = RandomTranslate(keyword, 'zh-tw', iterations)
 
 	def fetch(self, keyword, times):
 		output = ""
@@ -52,29 +72,8 @@ class XStandFor:
 			sentence = self.Merge(result)
 			out += str(i+1) + '\t' + sentence + '\n'
 
-			# translations = RandomTranslate(sentence, 'zh-tw')
-			# for t in translations:
-			# 	print(t)
-			
 			translations = translator.translate(sentence, lang_tgt='zh-tw')
-
-			filtered = ''
-			temp = ''
-			found = False
-			for t in range(len(translations)):
-				if is_ascii(translations[t]) and translations[t] != ' ':
-					if found == False:
-						temp = ''
-						found = True
-					temp += translations[t]
-				else:
-					if found:
-						found = False
-						translated = translator.translate(temp, lang_tgt='zh-tw')
-						filtered += remove_ascii(translated)
-					else:
-						filtered += translations[t]
-
+			filtered = tryTranslate(translations) # Try to translate un-translatable words.
 
 			out += '\t' + filtered
 			output += out + '\n\n'
@@ -88,12 +87,11 @@ class XStandFor:
 
 	def RandomTranslate(self, origin, target, iterations = 5):
 		current = origin
-		translates = []
 		for i in range(iterations):
 			targetLang = GetRandomIndex(self.lang)
 			current = translator.translate(current, lang_tgt=targetLang)
-			translates.append(translator.translate(current, lang_tgt=target) + targetLang)
-		return translates
+		current = translator.translate(current, lang_tgt=target)
+		return current
 
 	def GetRandomIndex(self, LIST):
 		rand = random.randint(0, len(LIST) - 1)

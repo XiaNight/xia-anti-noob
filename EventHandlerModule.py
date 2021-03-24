@@ -168,6 +168,15 @@ class EventHandler:
                 times = 30
             self.Print(XSF.fetch(userInput, times))
             pass
+        elif msg[0] == '&':
+            splits = msg[1:].split(' ')
+            userInput = splits[0]
+            times = 5
+            if len(splits) >= 2:
+                times = int(splits[1])
+            if times > 30: # Safty guard.
+                times = 30
+            self.Print(XSF.idea_transformer(userInput, times))
 
     # Get all usernames in the sheet.
     def GetAllUsernames(self, sheet):
