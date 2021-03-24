@@ -169,6 +169,7 @@ class EventHandler:
             self.Print(XSF.fetch(userInput, times))
             pass
         elif msg[0] == '&':
+            print('Executing Idea_Transformer')
             splits = msg[1:].split(' ')
             userInput = splits[0]
             times = 5
