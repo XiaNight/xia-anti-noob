@@ -56,7 +56,7 @@ class XStandFor:
 					filtered += translations[t]
 
 	def idea_transformer(self, keyword, iterations = 5):
-		return RandomTranslate(keyword, 'zh-tw', iterations)
+		return self.RandomTranslate(keyword, 'zh-tw', iterations)
 
 	def fetch(self, keyword, times):
 		output = ""
