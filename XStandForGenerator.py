@@ -61,7 +61,6 @@ class XStandFor:
 			filtered = ''
 			temp = ''
 			found = False
-			print(i+1, translations)
 			for t in range(len(translations)):
 				if is_ascii(translations[t]) and translations[t] != ' ':
 					if found == False:
@@ -73,7 +72,6 @@ class XStandFor:
 						found = False
 						translated = translator.translate(temp, lang_tgt='zh-tw')
 						filtered += remove_ascii(translated)
-						print(temp, translated, remove_ascii(translated))
 					else:
 						filtered += translations[t]
 
@@ -123,8 +121,6 @@ def merge_collection(c):
 	return output
 
 def Main():
-
-	print(remove_ascii('s貓'))
 
 	XSF = XStandFor()
 	userInput, times = input().split(' ')
