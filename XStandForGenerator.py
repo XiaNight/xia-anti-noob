@@ -73,7 +73,7 @@ class XStandFor:
 			out += str(i+1) + '\t' + sentence + '\n'
 
 			translations = translator.translate(sentence, lang_tgt='zh-tw')
-			filtered = tryTranslate(translations) # Try to translate un-translatable words.
+			filtered = self.tryTranslate(translations) # Try to translate un-translatable words.
 
 			out += '\t' + filtered
 			output += out + '\n\n'
@@ -88,7 +88,7 @@ class XStandFor:
 	def RandomTranslate(self, origin, target, iterations = 5):
 		current = origin
 		for i in range(iterations):
-			targetLang = GetRandomIndex(self.lang)
+			targetLang = self.GetRandomIndex(self.lang)
 			current = translator.translate(current, lang_tgt=targetLang)
 		current = translator.translate(current, lang_tgt=target)
 		return current
