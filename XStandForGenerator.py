@@ -41,19 +41,20 @@ class XStandFor:
 		filtered = ''
 		temp = ''
 		found = False
-		for t in range(len(translations)):
-			if is_ascii(translations[t]) and translations[t] != ' ':
+		for t in range(len(words)):
+			if is_ascii(words[t]) and words[t] != ' ':
 				if found == False:
 					temp = ''
 					found = True
-				temp += translations[t]
+				temp += words[t]
 			else:
 				if found:
 					found = False
 					translated = translator.translate(temp, lang_tgt='zh-tw')
 					filtered += remove_ascii(translated)
 				else:
-					filtered += translations[t]
+					filtered += words[t]
+		return filtered
 
 	def idea_transformer(self, keyword, iterations = 5):
 		return self.RandomTranslate(keyword, 'zh-tw', iterations)
