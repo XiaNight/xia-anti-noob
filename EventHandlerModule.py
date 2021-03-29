@@ -175,7 +175,7 @@ class EventHandler:
             userInput = XSF.Merge(splits).split('&')[0]
             times = 5
             if len(userInputTimesSplits) >= 2:
-                times = int(splits[-1])
+                times = int(splits[-1][1:])
             if times > 30: # Safty guard.
                 times = 30
             self.Print(XSF.idea_transformer(userInput, times))
