@@ -177,7 +177,7 @@ class EventHandler:
             print(userInputTimesSplits)
             times = 5
             if len(userInputTimesSplits) >= 2:
-                times = int(splits[-1][1:])
+                times = int(userInputTimesSplits[-1])
             if times > 30: # Safty guard.
                 times = 30
             self.Print(XSF.idea_transformer(userInput, times))
