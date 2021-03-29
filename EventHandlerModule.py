@@ -173,6 +173,8 @@ class EventHandler:
             splits = msg[1:].split(' ')
             userInputTimesSplits = msg[1:].split('&')
             userInput = XSF.Merge(splits).split('&')[0]
+            print(userInput)
+            print(userInputTimesSplits)
             times = 5
             if len(userInputTimesSplits) >= 2:
                 times = int(splits[-1][1:])
