@@ -171,10 +171,11 @@ class EventHandler:
         elif msg[0] == '&':
             print('Executing Idea_Transformer')
             splits = msg[1:].split(' ')
-            userInput = splits[0]
+            userInputTimesSplits = msg[1:].split('&')
+            userInput = XSF.Merge(splits).split('&')[0]
             times = 5
-            if len(splits) >= 2:
-                times = int(splits[1])
+            if len(userInputTimesSplits) >= 2:
+                times = int(splits[-1])
             if times > 30: # Safty guard.
                 times = 30
             self.Print(XSF.idea_transformer(userInput, times))
