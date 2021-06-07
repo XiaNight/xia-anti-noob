@@ -182,6 +182,15 @@ class EventHandler:
             if times > 30: # Safty guard.
                 times = 30
             self.Print(XSF.idea_transformer(userInput, times))
+        elif msg[0] == ')':
+            print('Executing Trash Talk')
+            if(msg[1] == 'A'):
+                GS.AppendValue('TrashTalk', msg[2:])
+            if(msg[1] == 'G'):
+                trashes = GS.GetRange('TrashTalk!A:A', majorDimension='COLUMNS')[0]
+                randomInt = random.randint(0, len(trashes) - 1)
+                self.Print(trashes[randomInt])
+                pass
 
     # Get all usernames in the sheet.
     def GetAllUsernames(self, sheet):
