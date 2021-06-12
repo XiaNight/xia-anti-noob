@@ -175,7 +175,7 @@ class EventHandler:
             userInputTimesSplits = msg[1:].split('&')
             userInput = XSF.Merge(splits).split('&')[0]
             print(userInput)
-            print(userInputTimesSplits)
+            print(userInputTimesSplits) 
             times = 5
             if len(userInputTimesSplits) >= 2:
                 times = int(userInputTimesSplits[-1])
@@ -184,9 +184,10 @@ class EventHandler:
             self.Print(XSF.idea_transformer(userInput, times))
         elif msg[0] == ')':
             print('Executing Trash Talk')
-            if(msg[1] == 'A'):
+            if(msg[1].lower() == 'a'):
                 GS.AppendValue('TrashTalk', msg[2:])
-            if(msg[1] == 'G'):
+                self.Print('Successfully added TRASH into our system!')
+            if(msg[1].lower() == 'g'):
                 trashes = GS.GetRange('TrashTalk!A:A', majorDimension='COLUMNS')[0]
                 randomInt = random.randint(0, len(trashes) - 1)
                 self.Print(trashes[randomInt])
