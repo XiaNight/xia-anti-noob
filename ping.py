@@ -1,7 +1,9 @@
 import discord
 from discord.ext import commands
+import os
 
 bot = commands.Bot(command_prefix='>')
+token = os.getenv("DISCORD_BOT_TOKEN")
 
 @bot.command()
 async def ping(ctx):
@@ -11,4 +13,4 @@ async def ping(ctx):
 async def on_ready():
     print('Bot is ready.')
 
-bot.run('ODU4NDE1ODA2ODc0NjQ4NjA4.YNd0BA.hKscGsFjELU7HnZiiOizifb7yIE')
+bot.run(token)
