@@ -205,7 +205,21 @@ def ReadSectionJson(sourceID):
 # def ToJson(text):
 #     return str(text)
 
+import discord
+from discord.ext import commands
+
+bot = commands.Bot(command_prefix='>')
+
+@bot.command()
+async def ping(ctx):
+    await ctx.send('pong')
+
+@bot.event
+async def on_ready():
+    print('Bot is ready.')
+
 if __name__ == "__main__":
     port = int(os.environ.get('PORT', 5000))
     app.run(host='0.0.0.0', port=port)
-    print('Bot Ready')
+    print('Line Bot Ready')
+    bot.run('ODU4NDE1ODA2ODc0NjQ4NjA4.YNd0BA.hKscGsFjELU7HnZiiOizifb7yIE')
