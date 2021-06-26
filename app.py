@@ -236,8 +236,10 @@ async def on_ready():
 if __name__ == "__main__":
     print('Setting up bots!')
 
-    task1 = asyncio.create_task(runDiscordBot())
-    task2 = asyncio.create_task(runLineBot())
+    loop = asyncio.get_event_loop()
+
+    task1 = loop.create_task(runDiscordBot())
+    task2 = loop.create_task(runLineBot())
 
     print('All Bot(s) Started!')
     
