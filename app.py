@@ -235,9 +235,9 @@ async def on_ready():
 
 async def CreateBots():
     tasks = list()
-    
+
     tasks.append(asyncio.create_task(runDiscordBot()))
-    tasks.append(asyncio.create_task(runLineBot()))
+    # tasks.append(asyncio.create_task(runLineBot()))
 
     await asyncio.wait(tasks)
 
