@@ -233,13 +233,16 @@ async def ping(ctx):
 async def on_ready():
     print('Bot is ready.')
 
+async def CreateBots():
+    task1 = asyncio.create_task(runDiscordBot())
+    task2 = asyncio.create_task(runLineBot())
+
 if __name__ == "__main__":
     print('Setting up bots!')
 
     loop = asyncio.get_event_loop()
-
-    task1 = loop.create_task(runDiscordBot())
-    task2 = loop.create_task(runLineBot())
+    loop.run_until_complete(CreateBots())
+    loop.close()
 
     print('All Bot(s) Started!')
     
