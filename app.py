@@ -26,11 +26,17 @@ from quickstart import *
 from datetime import datetime
 import tempfile
 import datetime
+import asyncio
 import random
 import json
 import time
 import sys
 import os
+
+'''Discord Bot Modules'''
+import discord
+from discord.ext import commands
+
 
 app = Flask(__name__)
 static_tmp_path = os.path.join(os.path.dirname(__file__), 'static', 'tmp')
@@ -205,8 +211,16 @@ def ReadSectionJson(sourceID):
 # def ToJson(text):
 #     return str(text)
 
-import discord
-from discord.ext import commands
+async def runDiscordBot():
+    print('running discord bot!')
+    bot.run(token)
+
+async def runLineBot():
+    print('running Line bot!')
+    port = int(os.environ.get('PORT', 5000))
+    app.run(host='0.0.0.0', port=port)
+
+
 
 bot = commands.Bot(command_prefix='>')
 token = os.getenv("DISCORD_BOT_TOKEN")
@@ -222,12 +236,8 @@ async def on_ready():
 if __name__ == "__main__":
     print('Setting up bots!')
 
-    print('running discord bot!')
-    bot.run(token)
+    task1 = asyncio.create_task(runDiscordBot())
+    task2 = asyncio.create_task(runLineBot())
 
-    print('running Line bot!')
-    port = int(os.environ.get('PORT', 5000))
-    app.run(host='0.0.0.0', port=port)
-
-    print('All Bot(s) Ready!')
+    print('All Bot(s) Started!')
     
