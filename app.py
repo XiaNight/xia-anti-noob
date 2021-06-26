@@ -221,7 +221,13 @@ async def on_ready():
 
 if __name__ == "__main__":
     print('Setting up bots!')
+
+    print('running discord bot!')
+    bot.run(token)
+
+    print('running Line bot!')
     port = int(os.environ.get('PORT', 5000))
     app.run(host='0.0.0.0', port=port)
-    print('Line Bot Ready')
-    bot.run(token)
+
+    print('All Bot(s) Ready!')
+    
