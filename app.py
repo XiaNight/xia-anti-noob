@@ -211,16 +211,14 @@ def ReadSectionJson(sourceID):
 # def ToJson(text):
 #     return str(text)
 
-async def runDiscordBot():
+def runDiscordBot():
     print('running discord bot!')
     bot.run(token)
 
-async def runLineBot():
+def runLineBot():
     print('running Line bot!')
     port = int(os.environ.get('PORT', 5000))
     app.run(host='0.0.0.0', port=port)
-
-
 
 bot = commands.Bot(command_prefix='>')
 token = os.getenv("DISCORD_BOT_TOKEN")
@@ -233,20 +231,17 @@ async def ping(ctx):
 async def on_ready():
     print('Bot is ready.')
 
-async def CreateBots():
-    tasks = list()
-
-    tasks.append(asyncio.create_task(runDiscordBot()))
-    # tasks.append(asyncio.create_task(runLineBot()))
-
-    await asyncio.wait(tasks)
+def CreateBots():
+    type = os.getenv("TYPE")
+    if(type == 'LINE'):
+        runLineBot()
+    elif(type == 'DISCORD'):
+        runDiscordBot()
 
 if __name__ == "__main__":
     print('Setting up bots!')
 
-    loop = asyncio.get_event_loop()
-    loop.run_until_complete(CreateBots())
-    loop.close()
+    CreateBots()
 
     print('All Bot(s) Started!')
     
