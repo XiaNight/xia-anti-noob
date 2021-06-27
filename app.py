@@ -215,7 +215,7 @@ def ReadSectionJson(sourceID):
 bot = None
 
 def runDiscordBot():
-    bot = DiscordBot()
+    DiscordBot()
 
 
 def runLineBot():

@@ -13,16 +13,15 @@ import os
 import discord
 from discord.ext import commands
 
-class DiscordBot:
+def DiscordBot():
 
     bot = commands.Bot(command_prefix='.')
     XSF = XStandFor()
     GS = GoogldSheet()
 
-    def __init__(self):
-        print('running discord bot!')
-        self.token = os.getenv("DISCORD_BOT_TOKEN")
-        self.bot.run(self.token)
+    print('running discord bot!')
+    token = os.getenv("DISCORD_BOT_TOKEN")
+    bot.run(token)
 
     @bot.command()
     async def ping(ctx):
