@@ -28,16 +28,17 @@ def DiscordBot():
         await ctx.send('pong')
 
     @bot.command()
-    async def T(ctx, cmd: str, value: str):
+    async def TA(ctx, value: str):
         print('Executing Trash Talk')
-        if(cmd.lower() == 'a'):
-            GS.AppendValue('TrashTalk', value)
-            await ctx.send('Successfully added TRASH into our system!')
-        if(cmd.lower() == 'g'):
-            trashes = GS.GetRange('TrashTalk!A:A', majorDimension='COLUMNS')[0]
-            randomInt = random.randint(0, len(trashes) - 1)
-            await ctx.send(trashes[randomInt])
-
+        GS.AppendValue('TrashTalk', value)
+        await ctx.send('Successfully added TRASH into our system!')
+            
+    @bot.command()
+    async def TG(ctx):
+        trashes = GS.GetRange('TrashTalk!A:A', majorDimension='COLUMNS')[0]
+        randomInt = random.randint(0, len(trashes) - 1)
+        await ctx.send(trashes[randomInt])
+        
     @bot.event
     async def on_ready():
         print('Bot is ready.')
