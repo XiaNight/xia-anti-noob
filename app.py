@@ -20,6 +20,7 @@ from Function import *
 from XStandForGenerator import *
 from EventHandlerModule import *
 from quickstart import *
+from DiscordBot import *
 
 
 '''Standard Modules'''
@@ -211,29 +212,22 @@ def ReadSectionJson(sourceID):
 # def ToJson(text):
 #     return str(text)
 
+bot = None
+
 def runDiscordBot():
     print('running discord bot!')
-    token = os.getenv("DISCORD_BOT_TOKEN")
-    bot.run(token)
+    bot = DiscordBot()
+
 
 def runLineBot():
     print('running Line bot!')
     port = int(os.environ.get('PORT', 5000))
     app.run(host='0.0.0.0', port=port)
 
-bot = commands.Bot(command_prefix='>')
 
-@bot.command()
-async def ping(ctx):
-    await ctx.send('pong')
-
-@bot.event
-async def on_ready():
-    print('Bot is ready.')
 
 def CreateBots():
     type = os.getenv("TYPE")
-    print(type)
     if(type == 'LINE'):
         runLineBot()
     elif(type == 'DISCORD'):
