@@ -233,12 +233,16 @@ async def on_ready():
 
 def CreateBots():
     type = os.getenv("TYPE")
-    print("Type: " + type)
+    print(type)
     if(type == 'LINE'):
         runLineBot()
     elif(type == 'DISCORD'):
         runDiscordBot()
+    elif(type == None):
+        print("Type not set!!!!")
+
 print("name: " + __name__)
+
 if __name__ == "__main__":
     print('Setting up bots!')
 
