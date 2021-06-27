@@ -1,49 +1,43 @@
-'''Line Bot API'''
-from flask import Flask, request, abort
-from linebot import (LineBotApi, WebhookHandler)
-from linebot.exceptions import (InvalidSignatureError)
-from linebot.models import *
-
 '''Google Modules'''
 from google_trans_new import google_translator
 
 '''Custome Modules'''
-from message import *
-from new import *
 from Function import *
 from XStandForGenerator import *
-from EventHandlerModule import *
 from quickstart import *
 
 '''Standard Modules'''
-from datetime import datetime
-import tempfile
-import datetime
-import random
-import json
-import time
-import sys
 import os
 
 '''Discord Bot Modules'''
 import discord
 from discord.ext import commands
 
-
-XSF = XStandFor()
-GS = GoogldSheet()
-
 class DiscordBot:
 
-    bot = commands.Bot(command_prefix='>')
+    bot = commands.Bot(command_prefix='.')
+    XSF = XStandFor()
+    GS = GoogldSheet()
 
     def __init__(self):
+        print('running discord bot!')
         self.token = os.getenv("DISCORD_BOT_TOKEN")
         self.bot.run(self.token)
 
     @bot.command()
     async def ping(ctx):
         await ctx.send('pong')
+
+    @bot.command()
+    async def T(ctx, cmd: str, value: str):
+        print('Executing Trash Talk')
+        if(cmd.lower() == 'a'):
+            GS.AppendValue('TrashTalk', value)
+            await ctx.send('Successfully added TRASH into our system!')
+        if(cmd.lower() == 'g'):
+            trashes = GS.GetRange('TrashTalk!A:A', majorDimension='COLUMNS')[0]
+            randomInt = random.randint(0, len(trashes) - 1)
+            await ctx.send(trashes[randomInt])
 
     @bot.event
     async def on_ready():

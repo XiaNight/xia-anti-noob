@@ -215,7 +215,6 @@ def ReadSectionJson(sourceID):
 bot = None
 
 def runDiscordBot():
-    print('running discord bot!')
     bot = DiscordBot()
 
 
@@ -223,7 +222,6 @@ def runLineBot():
     print('running Line bot!')
     port = int(os.environ.get('PORT', 5000))
     app.run(host='0.0.0.0', port=port)
-
 
 
 def CreateBots():
