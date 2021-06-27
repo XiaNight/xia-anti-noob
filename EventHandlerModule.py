@@ -4,7 +4,7 @@ from linebot import (LineBotApi, WebhookHandler)
 from linebot.exceptions import (InvalidSignatureError)
 from linebot.models import *
 
-'''3rd Party Modules'''
+'''Google Modules'''
 from google_trans_new import google_translator
 
 '''Custome Modules'''
