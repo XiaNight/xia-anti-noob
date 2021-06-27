@@ -213,6 +213,7 @@ def ReadSectionJson(sourceID):
 
 def runDiscordBot():
     print('running discord bot!')
+    token = os.getenv("DISCORD_BOT_TOKEN")
     bot.run(token)
 
 def runLineBot():
@@ -221,7 +222,6 @@ def runLineBot():
     app.run(host='0.0.0.0', port=port)
 
 bot = commands.Bot(command_prefix='>')
-token = os.getenv("DISCORD_BOT_TOKEN")
 
 @bot.command()
 async def ping(ctx):
