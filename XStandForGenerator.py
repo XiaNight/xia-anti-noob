@@ -99,7 +99,7 @@ class XStandFor:
 		current = origin
 		for i in range(iterations):
 			targetLang = self.GetRandomIndex(self.lang)
-			print('translating to:', targetLang)
+			print('translating', current,' to:', targetLang)
 			current = translator.translate(current, lang_tgt=targetLang)
 		current = translator.translate(current, lang_tgt=target)
 		return current
@@ -131,16 +131,16 @@ def merge_collection(c):
 
 def Main():
 
-	XSF = XStandFor()
-	userInput, times = input().split(' ')
-	times = int(times)
-	while(userInput != "-1"):
+	translator.translate('Test')
 
-		
-		print(XSF.fetch(userInput, times))
+	# XSF = XStandFor()
+	# userInput, times = input().split(' ')
+	# times = int(times)
+	# while(userInput != "-1"):
+	# 	print(XSF.fetch(userInput, times))
 
-		userInput, times = input().split(' ')
-		times = int(times)
+	# 	userInput, times = input().split(' ')
+	# 	times = int(times)
 
 
 if __name__ == '__main__':
