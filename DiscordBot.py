@@ -45,7 +45,10 @@ def DiscordBot():
     async def TC(ctx, times: int, *value: str):
         if times > 30: # Safty guard.
             times = 30
-        await ctx.send(XSF.fetch(list(value), times))
+        temp = ''
+        for v in list(value):
+            temp += v + ' '
+        await ctx.send(XSF.fetch(temp, times))
 
     @bot.event
     async def on_ready():
