@@ -55,7 +55,7 @@ def DiscordBot():
         value_list = list(value)
         value_whole = ' '
         value_whole = value_whole.join(value_list)
-        ctx.send(XSF.idea_transformer(value_whole, times))
+        await ctx.send(XSF.idea_transformer(value_whole, times))
 
     @bot.event
     async def on_ready():
