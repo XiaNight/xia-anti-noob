@@ -158,6 +158,7 @@ class EventHandler:
             if self.CheckKeyWord('DisableDebug', command, perm, 4):
                 self.DisableDebug()
         elif msg[0] == '%': # X stands for
+            print('Executing X stands for')
             splits = msg[1:].split(' ')
             if len(splits) < 2:
                 self.Print('Not enough arguments')
