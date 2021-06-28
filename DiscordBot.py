@@ -21,8 +21,10 @@ def DiscordBot():
     print('running discord bot!')
     token = os.getenv("DISCORD_BOT_TOKEN")
 
+    admins = [556399119787229202, 456714424573493260]
+
     def CheckPermission(id:int):
-        if(id == 556399119787229202):
+        if(id in admins):
             return True
         return False
     
@@ -45,6 +47,9 @@ def DiscordBot():
             
     @bot.command(name = 'TG', description = 'Get random trash from database.', usage = 'No input value required.', help = '')
     async def TG(ctx):
+        if(not CheckPermission(ctx.author.id)):
+            await ctx.send('You have no permission to do that.')
+            return
         trashes = GS.GetRange('TrashTalk!A:A', majorDimension='COLUMNS')[0]
         randomInt = random.randint(0, len(trashes) - 1)
         await ctx.send(trashes[randomInt])
