@@ -168,7 +168,6 @@ class EventHandler:
             if times > 30: # Safty guard.
                 times = 30
             self.Print(XSF.fetch(userInput, times))
-            pass
         elif msg[0] == '&':
             print('Executing Idea_Transformer')
             splits = msg[1:].split(' ')
