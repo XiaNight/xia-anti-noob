@@ -46,13 +46,10 @@ def DiscordBot():
         value_list = list(value)
         value_whole = ' '
         value_whole = value_whole.join(value_list)
-        await ctx.send(value_whole)
-        # if times > 30: # Safty guard.
-        #     times = 30
-        # temp = ''
-        # for v in list(value):
-        #     temp += v + ' '
-        # await ctx.send(XSF.fetch(temp, times))
+        # await ctx.send(value_whole)
+        if times > 30: # Safty guard.
+            times = 30
+        await ctx.send(XSF.fetch(value_whole, times))
 
     @bot.event
     async def on_ready():
