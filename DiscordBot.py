@@ -29,25 +29,25 @@ def DiscordBot():
     # async def help(ctx):
     #     await ctx.send('.help for help\n.TG for Trash Get\n.TA for add trash, ')
 
-    @bot.command(name = 'TA', help = '.TA my_trash', description = 'description', usage = 'usage', brief = 'brief')
+    @bot.command(name = 'TA', description = 'Add trash to database.', usage = '<value:string>', help = '')
     async def TA(ctx, value: str):
         print('Executing Trash Talk')
         GS.AppendValue('TrashTalk', value)
         await ctx.send('Successfully added TRASH into our system!')
             
-    @bot.command(name = 'TG', help = '.TG')
+    @bot.command(name = 'TG', description = 'Get random trash from database.', usage = 'No input value required.', help = '')
     async def TG(ctx):
         trashes = GS.GetRange('TrashTalk!A:A', majorDimension='COLUMNS')[0]
         randomInt = random.randint(0, len(trashes) - 1)
         await ctx.send(trashes[randomInt])
 
-    @bot.command(name = 'XS', help = 'X stands for')
-    async def XS(ctx, times: int, *value: str):
+    @bot.command(name = 'XS', description = 'X stands for, convert short terms to random full words', usage = '<times:int> <value:string>*', help = '')
+    async def XS(ctx, times: int, value: str):
         if times > 30: # Safty guard.
             times = 30
         await ctx.send(XSF.fetch(value, times))
 
-    @bot.command(name = 'RT', help = 'Random Translate, .RT <times> <sentense>')
+    @bot.command(name = 'RT', description = 'Random Translate', usage = '<times:int> <sentense:strint*>', help = '')
     async def RT(ctx, times: int, *value: str):
         if times > 30: # Safty guard.
             times = 30
