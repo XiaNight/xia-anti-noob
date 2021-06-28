@@ -60,7 +60,7 @@ class XStandFor:
 		return self.RandomTranslate(keyword, 'zh-tw', iterations)
 
 	def fetch(self, keyword, times):
-		print('keywords: ', keyword, 'times: ', times)
+		print('keywords:', keyword, 'times:', times)
 		output = ""
 		for i in range(times):
 			out = ""
@@ -76,6 +76,8 @@ class XStandFor:
 			print('merging result')
 			sentence = self.Merge(result)
 			out += str(i+1) + '\t' + sentence + '\n'
+
+			print(sentence)
 
 			print('translating')
 			translations = translator.translate(sentence, lang_tgt='zh-tw')
