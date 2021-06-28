@@ -2,7 +2,10 @@ import random
 import string
 
 from google_trans_new import google_translator
-translator = google_translator()  
+
+translate_urls = ["com", "co.kr", "at", "de", "ru", "ch", "fr", "es"]
+
+translator = google_translator(url_suffix = translate_urls)
 
 class XStandFor:
 
