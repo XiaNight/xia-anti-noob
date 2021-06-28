@@ -43,12 +43,16 @@ def DiscordBot():
 
     @bot.command(name = 'TC', help = 'Translate sentence for 5 times: .TC 5 I tea bag no bus')
     async def TC(ctx, times: int, *value: str):
-        if times > 30: # Safty guard.
-            times = 30
-        temp = ''
-        for v in list(value):
-            temp += v + ' '
-        await ctx.send(XSF.fetch(temp, times))
+        value_list = list(value)
+        value_whole = ' '
+        value_whole = value_whole.join(value_list)
+        await ctx.send(value_whole)
+        # if times > 30: # Safty guard.
+        #     times = 30
+        # temp = ''
+        # for v in list(value):
+        #     temp += v + ' '
+        # await ctx.send(XSF.fetch(temp, times))
 
     @bot.event
     async def on_ready():
