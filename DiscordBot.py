@@ -25,13 +25,13 @@ def DiscordBot():
     async def ping(ctx):
         await ctx.send('pong')
 
-    # @bot.description('description')
+    @bot.description(description = '正在聽 .help')
 
-    # @bot.command()
-    # async def help(ctx, value: str):
-    #     await ctx.send('.help for help\n.TG for Trash Get\n.TA for add trash, ')
+    @bot.command()
+    async def help(ctx, value: str):
+        await ctx.send('.help for help\n.TG for Trash Get\n.TA for add trash, ')
 
-    @bot.command(name = 'TA', help = '.TA my_trash')
+    @bot.command(name = 'TA', help = '.TA my_trash', description = 'description', usage = 'usage', brief = 'brief')
     async def TA(ctx, value: str):
         print('Executing Trash Talk')
         GS.AppendValue('TrashTalk', value)
