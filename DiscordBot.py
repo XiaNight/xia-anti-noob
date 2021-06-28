@@ -20,6 +20,11 @@ def DiscordBot():
 
     print('running discord bot!')
     token = os.getenv("DISCORD_BOT_TOKEN")
+
+    def CheckPermission(id:int):
+        if(id == 556399119787229202):
+            return True
+        return False
     
     @bot.command()
     async def ping(ctx):
@@ -31,6 +36,9 @@ def DiscordBot():
 
     @bot.command(name = 'TA', description = 'Add trash to database.', usage = '<value:string>', help = '')
     async def TA(ctx, value: str):
+        if(not CheckPermission(ctx.author.id)):
+            await ctx.send('You have no permission to do that.')
+            return
         print('Executing Trash Talk')
         GS.AppendValue('TrashTalk', value)
         await ctx.send('Successfully added TRASH into our system!')
@@ -47,7 +55,7 @@ def DiscordBot():
             times = 30
         await ctx.send(XSF.fetch(value, times))
 
-    @bot.command(name = 'RT', description = 'Random Translate', usage = '<times:int> <sentense:strint*>', help = '')
+    @bot.command(name = 'RT', description = 'Random Translate', usage = '<times:int> <sentense:string*>', help = '')
     async def RT(ctx, times: int, *value: str):
         if times > 30: # Safty guard.
             times = 30
