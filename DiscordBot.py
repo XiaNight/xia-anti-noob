@@ -54,11 +54,17 @@ def DiscordBot():
         randomInt = random.randint(0, len(trashes) - 1)
         await ctx.send(trashes[randomInt])
 
-    @bot.command(name = 'XS', description = 'X stands for, convert short terms to random full words', usage = '<times:int> <value:string>*', help = '')
+    @bot.command(name = 'XS', description = 'X stands for, convert short terms to random full words', usage = '<times:int> <value:string>', help = '')
     async def XS(ctx, times: int, value: str):
+        if(len > 7):
+            await ctx.send('Value too long, would cause lag.')
+            return
         if times > 30: # Safty guard.
             times = 30
-        await ctx.send(XSF.fetch(value, times))
+        print('fething: ', value, times)
+        fetch = XSF.fetch(value, times)
+        print('fetched: ', fetch)
+        await ctx.send(fetch)
 
     @bot.command(name = 'RT', description = 'Random Translate', usage = '<times:int> <sentense:string*>', help = '')
     async def RT(ctx, times: int, *value: str):
@@ -67,7 +73,10 @@ def DiscordBot():
         value_list = list(value)
         value_whole = ' '
         value_whole = value_whole.join(value_list)
-        await ctx.send(XSF.idea_transformer(value_whole, times))
+        print('transforming: ', value_whole)
+        transformed = XSF.idea_transformer(value_whole, times)
+        print('transformed: ', transformed)
+        await ctx.send(transformed)
 
     @bot.command()
     async def ME(ctx):
