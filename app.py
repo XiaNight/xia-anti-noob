@@ -233,12 +233,8 @@ def CreateBots():
     elif(type == None):
         print("Type not set!!!!")
 
-print("name: " + __name__)
-
 if __name__ == "__main__":
-    print('Setting up bots!')
-
+    print('Setting up bot(s)!')
     CreateBots()
-
     print('All Bot(s) Started!')
     
