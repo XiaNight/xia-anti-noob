@@ -31,19 +31,19 @@ def DiscordBot():
     # async def help(ctx, value: str):
     #     await ctx.send('.help for help\n.TG for Trash Get\n.TA for add trash, ')
 
-    @bot.command(name = 'Add Trash Talks', help = '.TA my_trash')
+    @bot.command(name = 'TA', help = '.TA my_trash')
     async def TA(ctx, value: str):
         print('Executing Trash Talk')
         GS.AppendValue('TrashTalk', value)
         await ctx.send('Successfully added TRASH into our system!')
             
-    @bot.command(name = 'Get Trash Talks', help = '.TG')
+    @bot.command(name = 'TG', help = '.TG')
     async def TG(ctx):
         trashes = GS.GetRange('TrashTalk!A:A', majorDimension='COLUMNS')[0]
         randomInt = random.randint(0, len(trashes) - 1)
         await ctx.send(trashes[randomInt])
 
-    @bot.command(name = '靈感製造機%', help = 'Translate sentence for 5 times: .TC 5 I tea bag no bus')
+    @bot.command(name = 'TC', help = 'Translate sentence for 5 times: .TC 5 I tea bag no bus')
     async def TC(ctx, times: int, *value: str):
         if times > 30: # Safty guard.
             times = 30
