@@ -36,7 +36,7 @@ def DiscordBot():
     # async def help(ctx):
     #     await ctx.send('.help for help\n.TG for Trash Get\n.TA for add trash, ')
 
-    @bot.command(name = 'TA', description = 'Add trash to database.', usage = '<value:string>', help = '')
+    @bot.command(name = 'TA', description = 'Add trash to database.', usage = '', help = '<value:string>')
     async def TA(ctx, value: str):
         if(not CheckPermission(ctx.author.id)):
             await ctx.send('You have no permission to do that.')
@@ -54,7 +54,7 @@ def DiscordBot():
         randomInt = random.randint(0, len(trashes) - 1)
         await ctx.send(trashes[randomInt])
 
-    @bot.command(name = 'XS', description = 'X stands for, convert short terms to random full words', usage = '<times:int> <value:string>', help = '')
+    @bot.command(name = 'XS', description = 'X stands for, convert short terms to random full words', usage = '', help = '<times:int> <value:string>')
     async def XS(ctx, times: int, value: str):
         if(len > 7):
             await ctx.send('Value too long, would cause lag.')
@@ -66,7 +66,7 @@ def DiscordBot():
         print('fetched: ', fetch)
         await ctx.send(fetch)
 
-    @bot.command(name = 'RT', description = 'Random Translate', usage = '<times:int> <sentense:string*>', help = '')
+    @bot.command(name = 'RT', description = 'Random Translate', usage = '', help = '<times:int> <sentense:string*>')
     async def RT(ctx, times: int, *value: str):
         if times > 30: # Safty guard.
             times = 30
