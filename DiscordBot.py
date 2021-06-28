@@ -51,11 +51,14 @@ def DiscordBot():
     async def RT(ctx, times: int, *value: str):
         if times > 30: # Safty guard.
             times = 30
-        
         value_list = list(value)
         value_whole = ' '
         value_whole = value_whole.join(value_list)
         await ctx.send(XSF.idea_transformer(value_whole, times))
+
+    @bot.command()
+    async def ME(ctx):
+        await ctx.send(ctx.author)
 
     @bot.event
     async def on_ready():
