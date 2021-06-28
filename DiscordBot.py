@@ -58,7 +58,7 @@ def DiscordBot():
 
     @bot.command()
     async def ME(ctx):
-        await ctx.send(ctx.author)
+        await ctx.send(ctx.author.id)
 
     @bot.event
     async def on_ready():
