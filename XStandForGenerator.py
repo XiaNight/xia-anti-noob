@@ -99,6 +99,7 @@ class XStandFor:
 		current = origin
 		for i in range(iterations):
 			targetLang = self.GetRandomIndex(self.lang)
+			print('translating to:', targetLang)
 			current = translator.translate(current, lang_tgt=targetLang)
 		current = translator.translate(current, lang_tgt=target)
 		return current

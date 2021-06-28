@@ -56,7 +56,7 @@ def DiscordBot():
 
     @bot.command(name = 'XS', description = 'X stands for, convert short terms to random full words', usage = '', help = '<times:int> <value:string>')
     async def XS(ctx, times: int, value: str):
-        if(len > 7):
+        if(len(value) > 7):
             await ctx.send('Value too long, would cause lag.')
             return
         if times > 30: # Safty guard.
