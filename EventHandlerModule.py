@@ -157,7 +157,7 @@ class EventHandler:
                 self.EnableDebug()
             if self.CheckKeyWord('DisableDebug', command, perm, 4):
                 self.DisableDebug()
-        elif msg[0] == '%':
+        elif msg[0] == '%': # X stands for
             splits = msg[1:].split(' ')
             if len(splits) < 2:
                 self.Print('Not enough arguments')
@@ -168,7 +168,7 @@ class EventHandler:
             if times > 30: # Safty guard.
                 times = 30
             self.Print(XSF.fetch(userInput, times))
-        elif msg[0] == '&':
+        elif msg[0] == '&': # translate input multiple times
             print('Executing Idea_Transformer')
             splits = msg[1:].split(' ')
             userInputTimesSplits = msg[1:].split('&')
