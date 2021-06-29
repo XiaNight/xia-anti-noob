@@ -87,9 +87,7 @@ def DiscordBot():
         if not CheckPermission(ctx.author.id):
             await ctx.send('You have no permission to do that.')
             return
-        temp = None
-        exec('temp = ctx.{}'.format(value))
-        await ctx.send(temp)
+        exec('ctx.send(ctx.{})')
 
     @bot.event
     async def on_ready():
