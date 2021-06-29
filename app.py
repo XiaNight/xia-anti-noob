@@ -201,7 +201,6 @@ def CreateBots():
         runDiscordBot()
     elif(type == None):
         print("Type not set!!!!")
-        runDiscordBot()
 
 if __name__ == "__main__":
     print('Setting up bot(s)!')

@@ -21,12 +21,17 @@ def DiscordBot():
     print('running discord bot!')
     token = os.getenv("DISCORD_BOT_TOKEN")
 
+    admin_servers = [849886372776116225]
     admins = [556399119787229202, 456714424573493260]
 
-    def CheckPermission(id:int):
-        if id in admins:
-            return True
-        return False
+    async def CheckPermission(ctx, check_server = True, check_admins = True):
+        if check_server and not (ctx.channel.id in admin_servers):
+            await ctx.send('This command is not enabled in this server.')
+            return False
+        if check_admins and not (ctx.author.id in admins):
+            await ctx.send('You have no permission to do that.')
+            return False
+        return True
     
     @bot.command()
     async def ping(ctx):
@@ -38,8 +43,7 @@ def DiscordBot():
 
     @bot.command(name = 'TA', description = 'Add trash to database.', usage = '', help = '<value:string>')
     async def TA(ctx, value: str):
-        if not CheckPermission(ctx.author.id):
-            await ctx.send('You have no permission to do that.')
+        if not await CheckPermission(ctx, check_admins=False):
             return
         print('Executing Trash Talk')
         GS.AppendValue('TrashTalk', value)
@@ -47,8 +51,7 @@ def DiscordBot():
             
     @bot.command(name = 'TG', description = 'Get random trash from database.', usage = 'No input value required.', help = '')
     async def TG(ctx):
-        if not CheckPermission(ctx.author.id):
-            await ctx.send('You have no permission to do that.')
+        if not await CheckPermission(ctx, check_admins=False):
             return
         trashes = GS.GetRange('TrashTalk!A:A', majorDimension='COLUMNS')[0]
         randomInt = random.randint(0, len(trashes) - 1)
@@ -82,12 +85,13 @@ def DiscordBot():
     async def ME(ctx):
         await ctx.send(ctx.author.id)
 
-    @bot.command()
+    @bot.command(name = 'CTX')
     async def CTX(ctx, value: str):
-        if not CheckPermission(ctx.author.id):
-            await ctx.send('You have no permission to do that.')
+        if not await CheckPermission(ctx):
             return
-        exec('result = ctx.{}'.format(value))
+        loc = {'ctx' : ctx, 'value': value}
+        exec('result = ctx.{}'.format(value), globals(), loc)
+        result = loc['result']
         await ctx.send(result)
 
     @bot.event
@@ -95,3 +99,6 @@ def DiscordBot():
         print('Bot is ready.')
 
     bot.run(token)
+
+if __name__ == '__main__':
+    DiscordBot()
