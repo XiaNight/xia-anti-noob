@@ -130,29 +130,6 @@ def handle_member_left(event):
 def handle_message(event):
     EH.OnEventGet(event)
 
-    # msg = event.message.text
-    # if 'new fact' in msg:
-    #     message = imagemap_message()
-    #     line_bot_api.reply_message(event.reply_token, message)
-    # elif 'new action' in msg:
-    #     message = buttons_message()
-    #     line_bot_api.reply_message(event.reply_token, message)
-    # elif 'vip' in msg:
-    #     message = Confirm_Template()
-    #     line_bot_api.reply_message(event.reply_token, message)
-    # elif 'horse' in msg:
-    #     message = Carousel_Template()
-    #     line_bot_api.reply_message(event.reply_token, message)
-    # elif 'pictures' in msg:
-    #     message = test()
-    #     line_bot_api.reply_message(event.reply_token, message)
-    # elif 'functions' in msg:
-    #     message = function_list()
-    #     line_bot_api.reply_message(event.reply_token, message)
-    # elif '尖頭' in msg:
-    #     message = sharp_head_image_message()
-    #     line_bot_api.reply_message(event.reply_token, message)
-
 @handler.add(FollowEvent)
 def handle_follow(event):
     EH.OnEventGet(event)
@@ -206,23 +183,15 @@ def ReadSectionJson(sourceID):
         data = json.load(json_file)
         return data
 
-# def FromJson(text):
-#     exec('return ' + text)
-
-# def ToJson(text):
-#     return str(text)
-
 bot = None
 
 def runDiscordBot():
     DiscordBot()
 
-
 def runLineBot():
     print('running Line bot!')
     port = int(os.environ.get('PORT', 5000))
     app.run(host='0.0.0.0', port=port)
-
 
 def CreateBots():
     type = os.getenv("TYPE")
@@ -232,9 +201,9 @@ def CreateBots():
         runDiscordBot()
     elif(type == None):
         print("Type not set!!!!")
+        runDiscordBot()
 
 if __name__ == "__main__":
     print('Setting up bot(s)!')
     CreateBots()
     print('All Bot(s) Started!')
-    
