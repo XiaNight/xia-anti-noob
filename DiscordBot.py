@@ -55,7 +55,7 @@ def DiscordBot():
             return
         trashes = GS.GetRange('TrashTalk!A:A', majorDimension='COLUMNS')[0]
         randomInt = random.randint(0, len(trashes) - 1)
-        await ctx.send('\'\'\'' + trashes[randomInt] + '\'\'\'')
+        await ctx.send('```' + trashes[randomInt] + '```')
 
     @bot.command(name = 'XS', description = 'X stands for, convert short terms to random full words', usage = '', help = '<times:int> <value:string>')
     async def XS(ctx, times: int, value: str):
@@ -67,7 +67,7 @@ def DiscordBot():
         print('fething: ', value, times)
         fetch = XSF.fetch(value, times)
         print('fetched: ', fetch)
-        await ctx.send('\'\'\'' + fetch + '\'\'\'')
+        await ctx.send('```' + fetch + '```')
 
     @bot.command(name = 'RT', description = 'Random Translate', usage = '', help = '<times:int> <sentense:string*>')
     async def RT(ctx, times: int, *value: str):
@@ -79,7 +79,7 @@ def DiscordBot():
         print('transforming: ', value_whole)
         transformed = XSF.idea_transformer(value_whole, times)
         print('transformed: ', transformed)
-        await ctx.send('\'\'\'' + transformed + '\'\'\'')
+        await ctx.send('```' + transformed + '```')
 
     @bot.command()
     async def ME(ctx):
