@@ -24,7 +24,7 @@ def DiscordBot():
     admins = [556399119787229202, 456714424573493260]
 
     def CheckPermission(id:int):
-        if(id in admins):
+        if id in admins:
             return True
         return False
     
@@ -38,7 +38,7 @@ def DiscordBot():
 
     @bot.command(name = 'TA', description = 'Add trash to database.', usage = '', help = '<value:string>')
     async def TA(ctx, value: str):
-        if(not CheckPermission(ctx.author.id)):
+        if not CheckPermission(ctx.author.id):
             await ctx.send('You have no permission to do that.')
             return
         print('Executing Trash Talk')
@@ -47,7 +47,7 @@ def DiscordBot():
             
     @bot.command(name = 'TG', description = 'Get random trash from database.', usage = 'No input value required.', help = '')
     async def TG(ctx):
-        if(not CheckPermission(ctx.author.id)):
+        if not CheckPermission(ctx.author.id):
             await ctx.send('You have no permission to do that.')
             return
         trashes = GS.GetRange('TrashTalk!A:A', majorDimension='COLUMNS')[0]
@@ -56,7 +56,7 @@ def DiscordBot():
 
     @bot.command(name = 'XS', description = 'X stands for, convert short terms to random full words', usage = '', help = '<times:int> <value:string>')
     async def XS(ctx, times: int, value: str):
-        if(len(value) > 7):
+        if len(value) > 7:
             await ctx.send('Value too long, would cause lag.')
             return
         if times > 30: # Safty guard.
@@ -81,6 +81,15 @@ def DiscordBot():
     @bot.command()
     async def ME(ctx):
         await ctx.send(ctx.author.id)
+
+    @bot.command()
+    async def CTX(ctx, value: str):
+        if not CheckPermission(ctx.author.id):
+            await ctx.send('You have no permission to do that.')
+            return
+        temp = None
+        exec('temp = ctx.{}'.format(value))
+        await ctx.send(temp)
 
     @bot.event
     async def on_ready():
