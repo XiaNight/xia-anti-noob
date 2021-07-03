@@ -62,8 +62,8 @@ def DiscordBot():
         if len(value) > 7:
             await ctx.send('Value too long, would cause lag.')
             return
-        if times > 30: # Safty guard.
-            times = 30
+        if times > 10: # Safty guard.
+            times = 10
         print('fething: ', value, times)
         fetch = XSF.fetch(value, times)
         print('fetched: ', fetch)
