@@ -1,7 +1,7 @@
 import random
 import string
 
-from google_trans_new import google_translator
+from google_trans_new_main.google_trans_new import google_translator
 
 translate_urls = ["com", "co.kr", "at", "de", "ru", "ch", "fr", "es"]
 
