@@ -1,5 +1,5 @@
 '''Google Modules'''
-from google_trans_new import google_translator
+from google_trans_new_main.google_trans_new import google_translator
 
 '''Custome Modules'''
 from Function import *
