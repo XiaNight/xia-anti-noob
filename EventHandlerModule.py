@@ -24,6 +24,7 @@ import json
 import time
 import sys
 import os
+import re
 
 # Channel Access Token
 line_bot_api = LineBotApi('cwBEnoA7OI09xMRwZj2JGgVLTiCY8h2fraLjFmwDMHx+JXKuewOBE5eh6xUCIt+1VQOoPVmUlow5xkZDY1oPY7yYPFcd9rN2JqtwCGH3X9Q59VnjPuC4dOqgvXpfW9P3JOgAjgkg+kVFh8yl4wEBJAdB04t89/1O/w1cDnyilFU=')
@@ -94,27 +95,34 @@ class EventHandler:
                 return True
         return False
 
+    def ParseCommand(self, message):
+        finds = re.findall(r'^\.([^\ ]*)\ ?(.*)', message)[0]
+        return finds
+            
+
     # When user/group/room sends a message.
     def MessageEvent(self):
 
-
         perm = 4
-
         msg = self.event.message.text
-        if msg[0] == '#': # Raw python code executing.
+
+        cmd, payload = ParseCommand(msg)
+        cmd = cmd.lower()
+
+        if cmd == 'exec': # Raw python code executing.
             if self.CheckPermissionLevel(self.GetUserID(), perm, 4, logWarning=False): # Requires developer level to execute.
-                exec(compile(msg[1:],"-","exec"))
-        elif msg[0] == '$': # Commands here.
-            command = msg[1:]
+                exec(compile(payload, "-", "exec"))
+        elif cmd == 'help': # Commands here.
+            command = payload
             if self.CheckKeyWord('help', command, perm, 2):
                 self.Print('$EnableDebug to enable debug\n$DisableDebug to disable debug\nstart with # to execute raw python code.')
             if self.CheckKeyWord('EnableDebug', command, perm, 4):
                 self.EnableDebug()
             if self.CheckKeyWord('DisableDebug', command, perm, 4):
                 self.DisableDebug()
-        elif msg[0] == '%': # X stands for
+        elif cmd == 'xsf': # X stands for
             print('Executing X stands for')
-            splits = msg[1:].split(' ')
+            splits = payload.split(' ')
             if len(splits) < 2:
                 self.Print('Not enough arguments')
                 return
@@ -124,10 +132,10 @@ class EventHandler:
             if times > 30: # Safty guard.
                 times = 30
             self.Print(XSF.fetch(userInput, times))
-        elif msg[0] == '&': # translate input multiple times
+        elif cmd == 'rt': # translate input multiple times
             print('Executing Idea_Transformer')
-            splits = msg[1:].split(' ')
-            userInputTimesSplits = msg[1:].split('&')
+            splits = payload.split(' ')
+            userInputTimesSplits = payload.split('&')
             userInput = XSF.Merge(splits).split('&')[0]
             print(userInput)
             print(userInputTimesSplits) 
@@ -137,13 +145,15 @@ class EventHandler:
             if times > 30: # Safty guard.
                 times = 30
             self.Print(XSF.idea_transformer(userInput, times))
-        elif msg[0] == ')':
+        elif cmd == 'at':
             print('Executing Trash Talk')
             if(msg[1].lower() == 'a'):
-                GS.AppendValue('TrashTalk', [msg[2:], self.event.source.user_id])
+            #     profile = line_bot_api.get_profile(self.GetUserID())
+                GS.AppendValue('TrashTalk', [msg[2:], self.GetUserID(), int(time.time())])
                 self.Print('Successfully added TRASH into our system!')
             if(msg[1].lower() == 'g'):
-                trashes = GS.GetRange('TrashTalk!A:A', majorDimension='COLUMNS')[0]
+                # A is the 'trash', B is the uploader, C is the upload date, D is the expire date
+                trashes = GS.GetRange('TrashTalk!A:D', majorDimension='COLUMNS')[0]
                 randomInt = random.randint(0, len(trashes) - 1)
                 self.Print(trashes[randomInt])
                 pass

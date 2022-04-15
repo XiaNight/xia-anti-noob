@@ -1,8 +1,3 @@
-# Imports the Google Cloud client library
-from google.cloud import storage
-
-# Instantiates a client
-storage_client = storage.Client()
-
-# The name for the new bucket
-bucket_name = "my-new-bucket"
+import re
+finds = re.findall(r'^\.([^\ ]*)\ ?(.*)', ".att test")[0]
+print(finds)
