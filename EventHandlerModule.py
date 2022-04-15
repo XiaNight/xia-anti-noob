@@ -97,7 +97,7 @@ class EventHandler:
 
     def ParseCommand(self, message):
         finds = re.findall(r'^\.([^\ ]*)\ ?(.*)', message)[0]
-        if len(finds != 2):
+        if len(finds) != 2:
             return (None, None)
         return finds
 
