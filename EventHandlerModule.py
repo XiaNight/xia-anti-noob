@@ -158,7 +158,7 @@ class EventHandler:
 
             currentTime = int(time.time())
             availableTrashes = []
-            for i in len(trashes[0]):
+            for i in range(len(trashes[0])):
                 if currentTime < int(trashes[3][i]):
                     availableTrashes.append(trashes[0][i])
 
