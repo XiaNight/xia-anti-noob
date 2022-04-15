@@ -106,7 +106,7 @@ class EventHandler:
         perm = 4
         msg = self.event.message.text
 
-        cmd, payload = ParseCommand(msg)
+        cmd, payload = self.ParseCommand(msg)
         cmd = cmd.lower()
 
         if cmd == 'exec': # Raw python code executing.
