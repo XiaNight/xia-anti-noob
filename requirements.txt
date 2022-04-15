@@ -1,7 +1,10 @@
+heroku buildpacks:add https://github.com/kevin0117/heroku-google-application-credentials-buildpack
+
 line-bot-sdk
 flask
 google-trans-new
 google-api-python-client
 google-auth-httplib2
 google-auth-oauthlib
+google-cloud-storage
 discord
