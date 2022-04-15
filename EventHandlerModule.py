@@ -96,10 +96,10 @@ class EventHandler:
         return False
 
     def ParseCommand(self, message):
-        finds = re.findall(r'^\.([^\ ]*)\ ?(.*)', message)[0]
-        if len(finds) != 2:
-            return (None, None)
-        return finds
+        finds = re.findall(r'^\.([^\ ]*)\ ?(.*)', message)
+        if len(finds) == 0:
+            return ('', '')
+        return finds[0]
 
     # When user/group/room sends a message.
     def MessageEvent(self):

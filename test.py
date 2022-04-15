@@ -1,3 +1,11 @@
 import re
-finds = re.findall(r'^\.([^\ ]*)\ ?(.*)', ".att test")[0]
-print(finds)
+def ParseCommand(message):
+    finds = re.findall(r'^\.([^\ ]*)\ ?(.*)', message)
+    if len(finds) == 0:
+    	return ('', '')
+    return finds[0]
+
+msg = ".gt 3 2"
+cmd, payload = ParseCommand(msg)
+cmd = cmd.lower()
+print(cmd, payload)
