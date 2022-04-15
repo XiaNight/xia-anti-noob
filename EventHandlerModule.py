@@ -17,6 +17,7 @@ from quickstart import *
 
 '''Standard Modules'''
 from datetime import datetime
+import traceback
 import tempfile
 import datetime
 import random
@@ -74,6 +75,7 @@ class EventHandler:
             print(sys.exc_info())
             print(str(e))
             print('An error has occurred')
+            print(traceback.format_exc())
             # self.Print('An error has occurred')
 
     # Return true if user's permission level is reached the required.
@@ -148,7 +150,7 @@ class EventHandler:
             self.Print(XSF.idea_transformer(userInput, times))
         elif cmd == 'at':
             print('Executing Trash Talk')
-            GS.AppendValue('TrashTalk', [msg[2:], self.GetUserID(), int(time.time())])
+            GS.AppendValue('TrashTalk', [payload, self.GetUserID(), int(time.time())])
             self.Print('Successfully added TRASH into our system!')
         elif cmd == 'gt':
             # A is the 'trash', B is the uploader, C is the upload date, D is the expire date

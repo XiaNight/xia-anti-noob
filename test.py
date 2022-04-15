@@ -1,4 +1,5 @@
 import re
+import traceback
 def ParseCommand(message):
     finds = re.findall(r'^\.([^\ ]*)\ ?(.*)', message)
     if len(finds) == 0:
