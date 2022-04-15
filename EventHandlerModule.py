@@ -150,7 +150,7 @@ class EventHandler:
             self.Print(XSF.idea_transformer(userInput, times))
         elif cmd == 'at':
             print('Executing Trash Talk')
-            GS.AppendValue('TrashTalk', [payload, self.GetUserID(), int(time.time())])
+            GS.AppendValue('TrashTalk', [payload, self.GetUserID(), int(time.time()), int(time.time()) + 60 * 60 * 24 * 30])
             self.Print('Successfully added TRASH into our system!')
         elif cmd == 'gt':
             # A is the 'trash', B is the uploader, C is the upload date, D is the expire date
@@ -161,7 +161,9 @@ class EventHandler:
             for i in range(len(trashes[0])):
                 if currentTime < int(trashes[3][i]):
                     availableTrashes.append(trashes[0][i])
-
+            if len(availableTrashes) == 0:
+                self.Print('All TRASHES were expired')
+                break
             randomInt = random.randint(0, len(availableTrashes) - 1)
             self.Print(availableTrashes[randomInt])
 
