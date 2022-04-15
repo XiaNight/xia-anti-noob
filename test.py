@@ -1,4 +1,8 @@
-from quickstart import *
+# Imports the Google Cloud client library
+from google.cloud import storage
 
-GS = GoogldSheet()
-print(GS.GetAllSheetNames())
+# Instantiates a client
+storage_client = storage.Client()
+
+# The name for the new bucket
+bucket_name = "my-new-bucket"
