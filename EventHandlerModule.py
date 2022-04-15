@@ -155,7 +155,7 @@ class EventHandler:
         elif cmd == 'gt':
             # A is the 'trash', B is the uploader, C is the upload date, D is the expire date
             trashes = GS.GetRange('TrashTalk!A:D', majorDimension='COLUMNS')
-            
+
             currentTime = int(time.time())
             availableTrashes = []
             for i in range(len(trashes[0])):
@@ -163,7 +163,7 @@ class EventHandler:
                     availableTrashes.append(trashes[0][i])
             if len(availableTrashes) == 0:
                 self.Print('All TRASHES were expired')
-            else
+            else:
                 randomInt = random.randint(0, len(availableTrashes) - 1)
                 self.Print(availableTrashes[randomInt])
 
