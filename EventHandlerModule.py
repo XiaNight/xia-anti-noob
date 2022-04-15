@@ -147,16 +147,13 @@ class EventHandler:
             self.Print(XSF.idea_transformer(userInput, times))
         elif cmd == 'at':
             print('Executing Trash Talk')
-            if(msg[1].lower() == 'a'):
-            #     profile = line_bot_api.get_profile(self.GetUserID())
-                GS.AppendValue('TrashTalk', [msg[2:], self.GetUserID(), int(time.time())])
-                self.Print('Successfully added TRASH into our system!')
-            if(msg[1].lower() == 'g'):
-                # A is the 'trash', B is the uploader, C is the upload date, D is the expire date
-                trashes = GS.GetRange('TrashTalk!A:D', majorDimension='COLUMNS')[0]
-                randomInt = random.randint(0, len(trashes) - 1)
-                self.Print(trashes[randomInt])
-                pass
+            GS.AppendValue('TrashTalk', [msg[2:], self.GetUserID(), int(time.time())])
+            self.Print('Successfully added TRASH into our system!')
+        elif cmd == 'gt':
+            # A is the 'trash', B is the uploader, C is the upload date, D is the expire date
+            trashes = GS.GetRange('TrashTalk!A:D', majorDimension='COLUMNS')[0]
+            randomInt = random.randint(0, len(trashes) - 1)
+            self.Print(trashes[randomInt])
 
     # Get all usernames in the sheet.
     def GetAllUsernames(self, sheet):
