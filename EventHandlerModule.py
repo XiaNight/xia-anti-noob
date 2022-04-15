@@ -97,8 +97,9 @@ class EventHandler:
 
     def ParseCommand(self, message):
         finds = re.findall(r'^\.([^\ ]*)\ ?(.*)', message)[0]
+        if len(finds != 2):
+            return (None, None)
         return finds
-            
 
     # When user/group/room sends a message.
     def MessageEvent(self):
@@ -151,9 +152,16 @@ class EventHandler:
             self.Print('Successfully added TRASH into our system!')
         elif cmd == 'gt':
             # A is the 'trash', B is the uploader, C is the upload date, D is the expire date
-            trashes = GS.GetRange('TrashTalk!A:D', majorDimension='COLUMNS')[0]
-            randomInt = random.randint(0, len(trashes) - 1)
-            self.Print(trashes[randomInt])
+            trashes = GS.GetRange('TrashTalk!A:D', majorDimension='COLUMNS')
+
+            currentTime = int(time.time())
+            availableTrashes = []
+            for i in len(trashes[0]):
+                if currentTime < int(trashes[3][i]):
+                    availableTrashes.append(trashes[0][i])
+
+            randomInt = random.randint(0, len(availableTrashes) - 1)
+            self.Print(availableTrashes[randomInt])
 
     # Get all usernames in the sheet.
     def GetAllUsernames(self, sheet):
