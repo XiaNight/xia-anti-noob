@@ -196,7 +196,7 @@ class EventHandler:
                 randomInt = random.randint(0, len(trashes) - 1)
                 self.Print(trashes[randomInt])
                 pass
-        else msg[0] == '^':
+        elif msg[0] == '^':
             print('Executing Poem Generator')
             poem = PG.GetPoem(4, False)
             self.Print(poem)
