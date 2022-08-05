@@ -42,5 +42,39 @@ class PoemGenerator:
 
 if __name__ == "__main__":
 	PG = PoemGenerator()
+
+	msg = "^2^13^71^3^9"
+	splits = msg[1:].split('^')
+	parmsLength = len(splits)
+
+	mode = 1
+	minSize = 4
+	maxSize = 4
+	minSentense = 4
+	maxSentense = 7
+
+	if parmsLength > 0:
+		mode = int(splits[0])
+
+	if parmsLength > 1:
+		minSize = int(splits[1])
+
+
+	if mode == 2:
+		if parmsLength > 2:
+			maxSize = int(splits[2])
+		if parmsLength > 3:
+			minSentense = int(splits[3])
+		if parmsLength > 4:
+			maxSentense = int(splits[4])
+
+	minSize = min(minSize, 9)
+	maxSize = min(maxSize, 10)
+	minSentense = min(minSentense, 9)
+	maxSentense = min(maxSentense, 10)
+
+
+	print(splits)
+	print(mode, minSize, maxSize, minSentense, maxSentense)
 	print(PG.GetScatterPoem(4, 7, 4, 7))
 	print(PG.GetPoem(4, False))

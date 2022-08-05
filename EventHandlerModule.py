@@ -198,8 +198,43 @@ class EventHandler:
                 self.Print(trashes[randomInt])
                 pass
         elif msg[0] == '^':
+            splits = msg[1:].split('^')
+            parmsLength = len(splits)
+
+            mode = 1
+            minSize = 4
+            maxSize = 4
+            minSentense = 4
+            maxSentense = 7
+
+            if parmsLength > 0:
+                mode = int(splits[0])
+
+            if parmsLength > 1:
+                minSize = int(splits[1])
+
+
+            if mode == 2:
+                if parmsLength > 2:
+                    maxSize = int(splits[2])
+                if parmsLength > 3:
+                    minSentense = int(splits[3]) + 1
+                if parmsLength > 4:
+                    maxSentense = int(splits[4]) + 1
+
+
+            minSize = min(minSize, 9)
+            maxSize = min(maxSize, 10)
+            minSentense = min(minSentense, 9)
+            maxSentense = min(maxSentense, 10)
+
             print('Executing Poem Generator')
-            poem = PG.GetPoem(4, False)
+
+            poem = None
+            if mode == 1:
+                poem = PG.GetPoem(minSize, False)
+            if mode == 2:
+                poem = PG.GetScatterPoem(minSize, maxSize, minSentense, maxSentense)
             self.Print(poem)
 
     # Get all usernames in the sheet.
