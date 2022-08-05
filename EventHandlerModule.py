@@ -30,6 +30,7 @@ line_bot_api = LineBotApi('cwBEnoA7OI09xMRwZj2JGgVLTiCY8h2fraLjFmwDMHx+JXKuewOBE
 
 XSF = XStandFor()
 GS = GoogldSheet()
+PG = PoemGenerator()
 
 class EventHandler:
     
@@ -195,6 +196,10 @@ class EventHandler:
                 randomInt = random.randint(0, len(trashes) - 1)
                 self.Print(trashes[randomInt])
                 pass
+        elif msg[0] == '^':
+            print('Executing Poem Generator')
+            poem = PG.GetPoem(4, False)
+            self.Print(poem)
 
     # Get all usernames in the sheet.
     def GetAllUsernames(self, sheet):
