@@ -19,7 +19,7 @@ from new import *
 from Function import *
 from XStandForGenerator import *
 from EventHandlerModule import *
-from PoemGenerator import *
+from PoemGeneratorModule import *
 from quickstart import *
 from DiscordBot import *
 
