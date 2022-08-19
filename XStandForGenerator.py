@@ -15,7 +15,7 @@ class XStandFor:
 	classified = {}
 
 	def __init__(self):
-		file1 = open('words.txt', 'r') 
+		file1 = open('words60000.txt', 'r') 
 		self.texts = file1.readlines()
 		file1.close()
 
