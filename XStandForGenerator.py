@@ -77,7 +77,8 @@ class XStandFor:
 			out += str(i+1) + '\t' + sentence + '\n'
 
 			translations = translator.translate(sentence, lang_tgt='zh-tw')
-			filtered = self.tryTranslate(translations) # Try to translate un-translatable words.
+			# filtered = self.tryTranslate(translations) # Try to translate un-translatable words.
+			filtered = translations
 
 			out += '\t' + filtered
 			output += out + '\n\n'
