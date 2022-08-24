@@ -75,7 +75,7 @@ class EventHandler:
             print(sys.exc_info())
             print(str(e))
             print('An error has occurred')
-            # self.Print('An error has occurred')
+            self.Print('An error has occurred')
 
     # Return true if user's permission level is reached the required.
     def CheckPermissionLevel(self, userID, user_permission, required_permission, logWarning = True):
