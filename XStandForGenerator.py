@@ -1,11 +1,9 @@
 import random
 import string
 
-from google_trans_new import google_translator
-
-translate_urls = ["com", "co.kr", "at", "de", "ru", "ch", "fr", "es"]
-
-translator = google_translator(url_suffix = translate_urls)
+from google.cloud import translate
+from google.oauth2 import service_account
+credentials = service_account.Credentials.from_service_account_file('credentials.json')
 
 class XStandFor:
 
@@ -13,8 +11,14 @@ class XStandFor:
 	raw_langs = None
 	lang = []
 	classified = {}
+	client = None
+	location = "global"
+	parent = None
+	project_id = "quickstartsheet-1613031202201"
 
 	def __init__(self):
+		self.InitialzeGoogleTranslate()
+
 		file1 = open('words60000.txt', 'r') 
 		self.texts = file1.readlines()
 		file1.close()
@@ -22,7 +26,6 @@ class XStandFor:
 		file2 = open('langs.txt', 'r') 
 		self.raw_langs = file2.readlines()
 		file2.close()
-
 
 		for i in range(len(self.texts)):
 			self.texts[i] = self.texts[i].strip()
@@ -53,7 +56,7 @@ class XStandFor:
 			else:
 				if found:
 					found = False
-					translated = translator.translate(temp, lang_tgt='zh-tw')
+					translated = self.TranslateText(temp, "en-US", 'zh-tw')
 					filtered += remove_ascii(translated)
 				else:
 					filtered += words[t]
@@ -76,26 +79,43 @@ class XStandFor:
 			sentence = self.Merge(result)
 			out += str(i+1) + '\t' + sentence + '\n'
 
-			translations = translator.translate(sentence, lang_tgt='zh-tw')
+			translations = self.TranslateText(sentence, "en-US", 'zh-tw')
 			# filtered = self.tryTranslate(translations) # Try to translate un-translatable words.
 			filtered = translations
 
 			out += '\t' + filtered
 			output += out + '\n\n'
 		return output
-
+	
+	def InitialzeGoogleTranslate(self):
+		self.client = translate.TranslationServiceClient(credentials=credentials)
+		self.parent = f"projects/{self.project_id}/locations/{self.location}"
+	
+	def TranslateText(self, text, src, dest):
+		response = self.client.translate_text(
+		request={
+			"parent": self.parent,
+			"contents": [text],
+			"mime_type": "text/plain",
+			"source_language_code": src, # "en-US"
+			"target_language_code": dest, # "es"
+		})
+		return response.translations[0].translated_text
+	
 	def Merge(self, LIST):
 		output = ''
 		for index in LIST:
 			output += index + ' '
 		return output
 
-	def RandomTranslate(self, origin, target, iterations = 5):
-		current = origin
+	def RandomTranslate(self, text, finalLanguage, iterations = 5):
+		current = text
+		lastLanguage = "en-US"
 		for i in range(iterations):
-			targetLang = self.GetRandomIndex(self.lang)
-			current = translator.translate(current, lang_tgt=targetLang)
-		current = translator.translate(current, lang_tgt=target)
+			currentLanguage = self.GetRandomIndex(self.lang)
+			current = self.TranslateText(current, lastLanguage, currentLanguage)
+			lastLanguage = currentLanguage
+		current = self.TranslateText(current, lastLanguage, finalLanguage)
 		return current
 
 	def GetRandomIndex(self, LIST):
@@ -124,7 +144,6 @@ def merge_collection(c):
 	return output
 
 def Main():
-
 	XSF = XStandFor()
 	userInput, times = input().split(' ')
 	times = int(times)
